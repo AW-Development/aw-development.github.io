@@ -1,0 +1,1928 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+        <meta name="author" content="awesomeMan"/>
+        <title>Facebook Ad Mockup</title>
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="theme-color" content="#ffffff">
+        <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.0.2/nouislider.min.css">
+        <link rel="stylesheet" href="https://use.typekit.net/quj6ejz.css">
+        <link rel="stylesheet" href="https://www.inbeat.co/css/main.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.2.0/css/glide.core.css" integrity="sha512-ShLuspGzRsTiMlQ2Rg0e+atjy/gVQr3oYKnKmQkHQ6sxcnDAEOtOaPz2rRmeygV2CtnwUawDyHkGgH4zUbP3Hw==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.typekit.net/zcm3fvv.css">
+    </head>
+    <body>
+        
+        <section class="container mobile-adjusted" id="mockup-hero">
+            <div class="hero_mockup-header">
+                <h1>
+                    Facebook Ad Mockup <br>Generator
+                </h1>
+                <h4>Create a one to one Facebook Ad mockup complete with all possible fields and call-to-actions.</h4>
+                <div id="mockup-generator-navigation">
+                    <!-- 
+                    <a target="_self" href="../../ad-mockup-generator/facebook/" class="facebook">
+                        <span>
+                            <svg width="5" height="10" viewBox="0 0 5 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3.19045 5.37601H4.74136L4.98486 3.72198H3.19013V2.81797C3.19013 2.13087 3.40399 1.52157 4.01621 1.52157H5V0.0781483C4.82715 0.0536442 4.46158 0 3.77082 0C2.32841 0 1.48278 0.799696 1.48278 2.62161V3.72198H0V5.37601H1.48278V9.92218C1.77643 9.96854 2.07387 10 2.3792 10C2.65519 10 2.92455 9.97351 3.19045 9.93576V5.37601Z" fill="black"/>
+                            </svg>
+                        </span>
+                        Facebook
+                    </a>
+                -->
+                </div>
+                <script>
+                    var app = new Vue({
+                        el: '#mockup-generator-navigation',
+                        mounted() {
+                            const nav = document.querySelectorAll('#mockup-generator-navigation a');
+                            let url = window.location.pathname;
+                            for (let i = 0; i < nav.length; i++) {
+                                var current = url.match(nav[i].classList[0])
+                                if (current !== null) {
+                                    nav[i].classList.add('active');
+                                }
+                            }
+                        },
+                    });
+                </script>
+            </div>
+        </section>
+        <div id="mockup_builder">
+            <transition name="fade">
+            </transition>
+            <section class="container mobile-adjusted">
+                <div>
+                    <div class="row" id="mockup__card-wrapper">
+                        <div :class="['col-xs-12',{'--advance': activeTab === 'active'}]" style="padding: 0;">
+                            <div class="row mockup__preview-configuration-wrapper" :class="{'--gray-bg' : activeTab === 'preview'}">
+                                <div class="preview-design-switch hide-md-up col-xs-12">
+                                    <div class="design-type col-xs-6" :class="{'--active_tab': activeTab === 'controls'}" @click="switchTab('controls')">Ad Content
+              </div>
+                                    <div class="design-type col-xs-6" :class="{'--active_tab': activeTab === 'preview'}" @click="switchTab('preview')">Preview
+              </div>
+                                </div>
+                                <div v-show="activeTab === 'both' ?  true : activeTab === 'controls'" class="mockup__configuration-wrapper col-sm-down-12">
+                                    <div class="mockup__configuration-section" id="mockup-controls">
+                                        <div class="mockup__configuration-header-wrapper">
+                                            <h4 class="mockup__configuration-title">Facebook</h4>
+                                        </div>
+                                        <div class="mockup-type">
+                                            <div class="mockup-type-header">
+                                                <span class="mockup__title">Ad Type & format</span>
+                                            </div>
+                                            <div>
+                                                <div class="glide">
+                                                    <div class="glide__track" data-glide-el="track">
+                                                        <div class="insta__mockup-type-wrapper" id="mockup-type-wrapper" ref="adType">
+                                                            <div style="width: auto !important;" class="mockup-type__card slide-mockup-type" :class="{'--active': activeAd.id === adType.id}" v-for="adType in adTypes" :key="adType.id" @click="adTypeClick(adType)">
+                                                                <div class="image-wrapper">
+                                                                    <img :src="getImgUrl(adType.img)">
+                                                                </div>
+                                                                <div class="insta-mockup-type-title">
+                                                                    <p :class="{'--active': activeAd.id === adType.id}">
+                                                                        {adType.type}
+                                <span>({adType.ratio})</span>
+                                                                    </p>
+                                                                    <div class="circle">
+                                                                        <div class="circle-inner" v-if="activeAd.id === adType.id"></div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="glide-controls" data-glide-el="controls" v-show="showGlideControls">
+                                                        <span class="swiper-previous glide-control-btn" data-glide-dir="<">
+                                                            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M15.4738 8.64453L10.4766 13.1044L15.4738 17.5643" stroke="black"/>
+                                                            </svg>
+                                                        </span>
+                                                        <span class="swiper-next glide-control-btn" data-glide-dir=">">
+                                                            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M10.4637 17.5664L15.4609 13.1065L10.4637 8.64668" stroke="black"/>
+                                                            </svg>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="profile__input-wrapper">
+                                            <span class="mockup__title">Profile picture and username</span>
+                                            <div class="uploader-wrapper">
+                                                <uploader @submit-image="uploadImage($event,'header')" @validated="validation($event)">
+                                                    <span class="upload-image-wrapper">
+                                                        <span v-if="!dpSrc">
+                                                            <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <rect y="0.214844" width="20" height="20" rx="5" fill="#DFDADA"/>
+                                                                <circle cx="10.0532" cy="10.2153" r="4.45946" fill="white"/>
+                                                                <circle cx="15.8878" cy="5.01667" r="1.37214" fill="white"/>
+                                                            </svg>
+                                                        </span>
+                                                        <img v-else :src="dpSrc ? dpSrc : ''" alt="">
+                                                    </span>
+                                                </uploader>
+                                                <div class="input-wrapper">
+                                                    <input v-model="profileName" @keyDown="onKeyDown" type="text" id="account-name-input" class="mockup-input" placeholder="username" maxlength="20"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mockup__configuration-message-wrapper" v-if="activeAd.id !== 3">
+                                            <h4 class="mockup__title">Caption
+                  </h4>
+                                            <p class="mockup__description">Grab interest with more info about what you're advertising. Keep it short - we recommend 90 characters
+                    or less.
+                  </p>
+                                            <textarea @input="addCaption($event, 90,'Facebook')" maxlength="1500" class="message-textarea" v-model="caption" placeholder="This is caption that will display on the final mockup. You can write anything."></textarea>
+                                        </div>
+                                        <div class="mockup__configuration-dropzone-wrapper ib__mockup-dropzone">
+                                            <span class="mockup__title" v-if="activeAd.id === 4">Image carousel (up to 10)</span>
+                                            <span class="mockup__title" v-else>Image</span>
+                                            <span class="mockup__description">
+                                                Recommended image size is 
+                    <span>{activeAd.resolution}</span>
+                                                &nbsp;pixels
+                                            </span>
+                                            <uploader v-if="activeAd.type !== 'Carousel'" :multiple="false" :drop="true" @submit-image="uploadImage($event,'body')" @validated="validation($event)">
+                                                <div class="upload_placeholder-wrapper">
+                                                    <svg width="35" height="30" viewBox="0 0 35 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M0.195312 2.12109C0.195312 1.01652 1.09074 0.121094 2.19531 0.121094H32.1953C33.2999 0.121094 34.1953 1.01652 34.1953 2.12109V27.1211C34.1953 28.2257 33.2999 29.1211 32.1953 29.1211H2.19531C1.09074 29.1211 0.195312 28.2257 0.195312 27.1211V2.12109ZM14.0632 9.74112C14.0632 12.4363 11.882 14.6211 9.19098 14.6211C6.49999 14.6211 4.31878 12.4363 4.31878 9.74112C4.31878 7.04598 6.49999 4.86114 9.19098 4.86114C11.882 4.86114 14.0632 7.04598 14.0632 9.74112ZM21.328 9.65397L13.1931 23.9453H29.4628L21.328 9.65397Z" fill="#E7E3E3"/>
+                                                    </svg>
+                                                    <p>
+                                                        <span>Click to upload</span>
+                                                        or drag-and-drop
+</br><div class="sub-droparea-text">Supports only .png or .jpg</div>
+<span ref="messageError" class="image-error-text"></span>
+</p></div></uploader>
+<div v-else class="multiple-uploader">
+    <div class="ib_upload" v-for="(post,i) in postSrc" :key="i">
+        <div class="image-wrapper">
+            <div class="edit-delete-wrapper">
+                <uploader :multiple="false" @submit-image="uploadImage($event,'body',i)" @validated="validation($event)">
+                    <span class="delete-icon">
+                        <svg width="9" height="9" viewBox="0 0 9 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8.29212 0.438637C7.90259 0.0491 7.27098 0.0491 6.88151 0.438637L3.36787 3.95228C3.30978 4.01037 3.27022 4.08433 3.25414 4.16485L2.99247 5.47315C2.96517 5.60952 3.00786 5.75056 3.1062 5.84889C3.20461 5.94723 3.34558 5.98992 3.48201 5.96262L4.79025 5.70096C4.87083 5.68487 4.94479 5.64531 5.00288 5.58722L8.51653 2.07358C8.90606 1.68404 8.90606 1.05243 8.51653 0.662896L8.29212 0.438637Z" fill="black"/>
+                            <path d="M1.74025 1.81058C1.51048 1.81058 1.32418 1.99681 1.32418 2.22658V7.21882C1.32418 7.44858 1.51048 7.63488 1.74025 7.63488H6.73249C6.96226 7.63488 7.14848 7.44858 7.14848 7.21882V4.7227H7.98055V7.21882C7.98055 7.90817 7.42177 8.46688 6.73249 8.46688H1.74025C1.05096 8.46688 0.492188 7.90817 0.492188 7.21882V2.22658C0.492188 1.53729 1.05096 0.978516 1.74025 0.978516H4.23637V1.81058H1.74025Z" fill="black"/>
+                        </svg>
+                    </span>
+                </uploader>
+                <span class="delete-icon" style="margin-top: 4px;" @click="deletePost(post)">
+                    <svg width="9" height="11" viewBox="0 0 9 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.70743 1.88699H6.05288V1.22363C6.0526 0.959785 5.94788 0.706829 5.76179 0.520301C5.5757 0.333763 5.32335 0.228782 5.06013 0.228516H3.73657C3.47335 0.2288 3.221 0.333768 3.03491 0.520301C2.84881 0.706839 2.74408 0.959785 2.74382 1.22363V1.88699H1.08927C1.00147 1.8869 0.917066 1.92176 0.854877 1.98391C0.792782 2.04615 0.757812 2.13066 0.757812 2.21867C0.757812 2.30678 0.792782 2.39128 0.854877 2.45343C0.917066 2.51567 1.00147 2.55053 1.08927 2.55044H7.70741C7.79521 2.55053 7.87961 2.51567 7.9418 2.45343C8.00389 2.39128 8.03886 2.30678 8.03886 2.21867C8.03886 2.13066 8.00389 2.04615 7.9418 1.98391C7.87961 1.92176 7.79521 1.8869 7.70741 1.88699H7.70743ZM3.40551 1.22363C3.40579 1.0405 3.5538 0.892144 3.7365 0.89195H5.06006C5.24275 0.89214 5.39076 1.0405 5.39095 1.22363V1.88699H3.40551V1.22363ZM1.42007 8.52081C1.42063 8.96049 1.59511 9.38198 1.9053 9.6929C2.21549 10.0038 2.63598 10.1787 3.07461 10.1793H5.72182C6.16046 10.1787 6.58095 10.0038 6.89113 9.6929C7.20132 9.38198 7.37579 8.96049 7.37637 8.52081V3.21381H1.41997L1.42007 8.52081ZM5.06001 4.70633C5.05991 4.61832 5.09469 4.53372 5.15679 4.47138C5.21879 4.40904 5.30309 4.37409 5.39099 4.37409C5.47879 4.37409 5.5631 4.40904 5.6251 4.47138C5.6872 4.53372 5.72198 4.61832 5.72188 4.70633V8.6867C5.72198 8.7748 5.6872 8.85931 5.6251 8.92164C5.5631 8.98398 5.47879 9.01903 5.39099 9.01903C5.30309 9.01903 5.21879 8.98398 5.15679 8.92164C5.09469 8.85931 5.05991 8.7748 5.06001 8.6867V4.70633ZM3.07457 4.70633C3.07447 4.61832 3.10925 4.53372 3.17135 4.47138C3.23335 4.40904 3.31765 4.37409 3.40546 4.37409C3.49335 4.37409 3.57766 4.40904 3.63966 4.47138C3.70175 4.53372 3.73653 4.61832 3.73644 4.70633V8.6867C3.73653 8.7748 3.70175 8.85931 3.63966 8.92164C3.57766 8.98398 3.49335 9.01903 3.40546 9.01903C3.31765 9.01903 3.23335 8.98398 3.17135 8.92164C3.10925 8.85931 3.07447 8.7748 3.07457 8.6867V4.70633Z" fill="black"/>
+                    </svg>
+                </span>
+            </div>
+            <img class="preview-image-body" :src="post" alt="">
+        </div>
+    </div>
+    <uploader v-if="postSrc.length < 10" :multiple="true" @submit-image="uploadImage($event,'body')" @validated="validation($event)">
+        <div class="ib_upload uploader">
+            <div class="image-wrapper">
+                <span>
+                    <svg width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M6.65152 6.14302L1.59978 6.14302L1.59978 7.80754H6.65152L6.65152 12.8605L8.31604 12.8605L8.31604 7.80754L13.3696 7.80754L13.3696 6.14302L8.31604 6.14302L8.31604 1.09067L6.65152 1.09067L6.65152 6.14302Z" fill="#CCCCCC"/>
+                    </svg>
+                </span>
+            </div>
+        </div>
+    </uploader>
+</div>
+</div>
+<div class="mockup__configuration-like-count ib__mockup-input-wrapper website-name-input" v-if="activeAd.id === 4">
+    <h4 class="mockup__title">Website
+                    </h4>
+    <div class="input-wrapper">
+        <input @input="textInput($event,'websiteName')" type="text" id="account-name-input" class="mockup-input" placeholder="websitename.com" maxlength="20"/>
+    </div>
+</div>
+<div class="mockup__configuration-like-count ib__mockup-input-wrapper website-name-input" v-if="activeAd.id !== 4">
+    <h4 class="mockup__title">Website
+                    </h4>
+    <div class="input-wrapper">
+        <input @input="textInput($event,'websiteUrl')" type="text" id="account-name-input" class="mockup-input" placeholder="websitename.com" maxlength="20"/>
+    </div>
+</div>
+<div class="mockup__configuration-like-count ib__mockup-input-wrapper">
+    <h4 class="mockup__title">Headline
+                    </h4>
+    <div class="input-wrapper">
+        <input @input="textInput($event,'headlineCopy')" type="text" id="account-name-input" class="mockup-input" placeholder="Headline copy here" maxlength="20"/>
+    </div>
+</div>
+<div class="mockup__configuration-ad-action">
+    <h4 class="mockup__title">Call to action
+                  </h4>
+    <p class="mockup__description">The displayed CTA on the bottom of the ad
+                  </p>
+    <dropdown :options="ctaOptions" :optionselected="selectedPreviewCTA" @option-select="optionSelect($event)"></dropdown>
+</div>
+<div class="mockup__configuration-ad-action">
+    <h4 class="mockup__title">Reactions
+                  </h4>
+    <div class="reaction-select-wrapper">
+        <div v-for="reaction in platformReactions" :key="reaction" @click="toggleReactionSelection(reaction)" :class="[{'--selected': platformSelectedReactions.includes(reaction)},'platform-reaction']">
+            <div class="reaction-wrapper">
+                <img :src="getImgUrl(reaction)" alt="">
+            </div>
+            <div class="circle-wrapper">
+                <span class="circle">
+                    <span :class="{'--active': platformSelectedReactions.includes(reaction)}"></span>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mockup__configuration-like-count" v-if="activeAd.id !== 3">
+    <h4 class="mockup__title">Reaction Counts
+                  </h4>
+    <p class="mockup__description">Set the number of reactions for your post. Numeric input only.
+                  </p>
+    <input oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" @input="numberInput($event,'likes')" class="likes-count-input" type="number" placeholder="15">
+</div>
+<div class="mockup__configuration-like-count ib__mockup-input-wrapper" v-if="activeAd.id !== 3">
+    <h4 class="mockup__title">Comments
+                  </h4>
+    <p class="mockup__description">Set the number of comments for your post. Numeric input only.
+                  </p>
+    <input oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="likes-count-input" type="number" @input="numberInput($event,'commentCount')" placeholder="1">
+</div>
+<div class="mockup__configuration-like-count ib__mockup-input-wrapper" v-if="activeAd.id !== 3">
+    <h4 class="mockup__title">Share
+                  </h4>
+    <p class="mockup__description">Set the number of Share for your post. Numeric input only.
+                  </p>
+    <input oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" class="likes-count-input" type="number" placeholder="1" @input="numberInput($event,'shareCount')">
+</div>
+</div></div>
+<div v-show="activeTab === 'both' ?  true : activeTab === 'preview'" class="mockup__preview-section" id="mockup-preview">
+    <div class="preview-wrapper-mobile">
+        <div id="mockup-download-img">
+            <div id="facebook-mockup-preview" class="mockup-preview-wrapper" v-if="activeAd.id === 1 || activeAd.id === 2 || activeAd.id === 4 || activeAd.id === 5">
+                <div class="preview-header">
+                    <div class="preview-creadincials">
+                        <uploader @submit-image="uploadImage($event,'header')" @validated="validation($event)">
+                            <div class="gradient-border">
+                                <div class="profile-picture-wrapper">
+                                    <img v-if="dpSrc" :src="dpSrc ? dpSrc : ''" alt="">
+                                </div>
+                            </div>
+                        </uploader>
+                        <div class="user-name-wrapper">
+                            <h4 class="user-name">{profileName ? profileName : 'Page Name'}</h4>
+                            <div class="sponcered-text facebook-sponcered-text">
+                                Sponsored <span class="facebook-sponcered-dot"></span>
+                                <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6.5 0.5C7.65323 0.5 8.75403 0.814516 9.75 1.39113C10.746 1.96774 11.5323 2.75403 12.1089 3.75C12.6855 4.74597 13 5.84677 13 7C13 8.17944 12.6855 9.25403 12.1089 10.25C11.5323 11.246 10.746 12.0585 9.75 12.6351C8.75403 13.2117 7.65323 13.5 6.5 13.5C5.32056 13.5 4.24597 13.2117 3.25 12.6351C2.25403 12.0585 1.44153 11.246 0.864919 10.25C0.288306 9.25403 0 8.17944 0 7C0 5.84677 0.288306 4.74597 0.864919 3.75C1.44153 2.75403 2.25403 1.96774 3.25 1.39113C4.24597 0.814516 5.32056 0.5 6.5 0.5ZM6.5 12.2419C7.44355 12.2419 8.30847 12.006 9.12097 11.5343C9.90726 11.0625 10.5625 10.4335 11.0343 9.62097C11.506 8.83468 11.7419 7.94355 11.7419 7C11.7419 6.58065 11.6895 6.16129 11.5847 5.74194H11.1129C10.9819 5.74194 10.877 5.79435 10.7984 5.87298C10.7198 5.95161 10.6935 6.03024 10.6935 6.13508V6.31855C10.6935 6.50202 10.6149 6.63306 10.4577 6.68548L10.0645 6.89516C9.90726 6.97379 9.77621 6.97379 9.67137 6.86895L9.17339 6.55444C9.06855 6.50202 8.9375 6.47581 8.83266 6.50202L8.75403 6.52823C8.62298 6.58065 8.54435 6.65927 8.49194 6.79032C8.43952 6.92137 8.46573 7.02621 8.54435 7.13105L8.88508 7.65524C8.96371 7.78629 9.06855 7.83871 9.22581 7.83871H9.46169C9.56653 7.83871 9.64516 7.89113 9.72379 7.96976C9.80242 8.04839 9.85484 8.12702 9.85484 8.23185V8.54637C9.85484 8.65121 9.82863 8.72984 9.77621 8.78226L9.27823 9.4375C9.22581 9.48992 9.1996 9.56855 9.1996 9.62097L9.09476 10.1976C9.06855 10.3024 9.01613 10.381 8.96371 10.4335C8.70161 10.6694 8.49194 10.9315 8.30847 11.1935L7.96774 11.7177C7.81048 11.9274 7.62702 12.0323 7.36492 12.0323C7.20766 12.0323 7.07661 12.006 6.97177 11.9274C6.86694 11.875 6.7621 11.7702 6.70968 11.6391C6.55242 11.3508 6.5 11.0363 6.5 10.6956V9.90927C6.5 9.80444 6.44758 9.72581 6.36895 9.64718C6.29032 9.56855 6.21169 9.51613 6.10685 9.51613H5.4254C5.00605 9.51613 4.66532 9.38508 4.40323 9.09677C4.11492 8.83468 3.98387 8.49395 3.98387 8.0746V7.70766C3.98387 7.49798 4.03629 7.28831 4.14113 7.07863C4.24597 6.86895 4.37702 6.71169 4.56048 6.58065L5.26815 6.03024C5.53024 5.84677 5.81855 5.74194 6.13306 5.74194H6.15927C6.36895 5.74194 6.60484 5.79435 6.81452 5.89919L7.18145 6.08266C7.28629 6.13508 7.39113 6.16129 7.49597 6.10887L8.72782 5.68952C8.80645 5.68952 8.88508 5.6371 8.9375 5.55847C8.98992 5.50605 9.01613 5.40121 9.01613 5.29637C9.01613 5.19153 8.96371 5.1129 8.88508 5.03427C8.80645 4.95565 8.72782 4.90323 8.62298 4.90323H8.33468C8.22984 4.90323 8.125 4.87702 8.04637 4.77218L7.88911 4.61492C7.78427 4.53629 7.70565 4.48387 7.60081 4.48387H5.21573C5.11089 4.48387 5.00605 4.45766 4.92742 4.37903C4.84879 4.3004 4.82258 4.19556 4.82258 4.09073V3.95968C4.82258 3.88105 4.84879 3.80242 4.90121 3.72379C4.95363 3.64516 5.03226 3.59274 5.1371 3.56653L5.50403 3.46169C5.60887 3.46169 5.6875 3.40927 5.73992 3.30444L5.9496 2.98992C6.02823 2.88508 6.13306 2.80645 6.29032 2.80645H6.91935C7.02419 2.80645 7.12903 2.78024 7.20766 2.70161C7.28629 2.62298 7.33871 2.51815 7.33871 2.41331V1.83669C7.02419 1.78427 6.7621 1.75806 6.5 1.75806C5.55645 1.75806 4.66532 1.99395 3.87903 2.46573C3.06653 2.9375 2.4375 3.59274 1.96573 4.37903C1.49395 5.19153 1.25806 6.05645 1.25806 7C1.25806 7.94355 1.49395 8.83468 1.96573 9.62097C2.4375 10.4335 3.06653 11.0625 3.87903 11.5343C4.66532 12.006 5.55645 12.2419 6.5 12.2419Z" fill="#606770"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <svg width="15" height="4" viewBox="0 0 15 4" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1.92496 0.728516C2.35261 0.728516 2.76275 0.898398 3.06515 1.20079C3.36754 1.50319 3.53742 1.91332 3.53742 2.34097C3.53742 2.76862 3.36754 3.17876 3.06515 3.48115C2.76275 3.78355 2.35261 3.95343 1.92496 3.95343C1.49731 3.95343 1.08716 3.78355 0.784768 3.48115C0.482374 3.17876 0.3125 2.76862 0.3125 2.34097C0.3125 1.91332 0.482374 1.50319 0.784768 1.20079C1.08716 0.898398 1.49731 0.728516 1.92496 0.728516ZM7.29982 0.728516C7.72747 0.728516 8.13761 0.898398 8.44001 1.20079C8.7424 1.50319 8.91227 1.91332 8.91227 2.34097C8.91227 2.76862 8.7424 3.17876 8.44001 3.48115C8.13761 3.78355 7.72747 3.95343 7.29982 3.95343C6.87217 3.95343 6.46202 3.78355 6.15963 3.48115C5.85723 3.17876 5.68736 2.76862 5.68736 2.34097C5.68736 1.91332 5.85723 1.50319 6.15963 1.20079C6.46202 0.898398 6.87217 0.728516 7.29982 0.728516ZM12.6747 0.728516C13.1023 0.728516 13.5125 0.898398 13.8149 1.20079C14.1173 1.50319 14.2871 1.91332 14.2871 2.34097C14.2871 2.76862 14.1173 3.17876 13.8149 3.48115C13.5125 3.78355 13.1023 3.95343 12.6747 3.95343C12.247 3.95343 11.8369 3.78355 11.5345 3.48115C11.2321 3.17876 11.0622 2.76862 11.0622 2.34097C11.0622 1.91332 11.2321 1.50319 11.5345 1.20079C11.8369 0.898398 12.247 0.728516 12.6747 0.728516Z" fill="#262627"/>
+                    </svg>
+                </div>
+                <div class="preview-caption facebook-caption" id="preview-caption" style="min-height: 40px;">
+                    <span class="caption-text" v-html="count === 0 ? displayCaptionValue : captionValue"></span>
+                    <span v-if="showSeeMore" class="see-more" @click="seeMoreExpand">...See More</span>
+                </div>
+                <uploader v-if="activeAd.id !== 4" @submit-image="uploadImage($event,'body')" @validated="validation($event)">
+                    <div class="preview-body" id="post-body" :style="getComputedHeight">
+                        <img v-if="postSrc[0]" class="preview-image-body" :src="postSrc[postSrc.length - 1]" alt="">
+                        <span v-else class="placeholder-info">
+                            {activeAd.ratio} 
+                            <span>
+                                {activeAd.resolution}px
+                          recommended<span></span>
+                    </div>
+                </uploader>
+                <div v-else class="ib__facebook-carousel-wrapper">
+                    <div class="ib-facebook-carousel">
+                        <div v-for="(post,i) in postSrc[0] ? postSrc : [1]" :key="(Math.random() * 100)" class="ib_facebook-slide" id="facebook__carousel-slide">
+                            <uploader style="width: 100%;" @submit-image="uploadImage($event,'body', i)" @validated="validation($event)">
+                                <div class="post-wrapper" :style="getComputedHeight">
+                                    <img v-if="postSrc[0]" class="preview-image-body" :src="post" alt="">
+                                    <span v-else class="placeholder-info">
+                                        1:1<span>1080x1080px
+                                recommended</span>
+                                    </span>
+                                </div>
+                            </uploader>
+                            <div class="facebook__carousel-cta">
+                                <div class="facebook__cta-wrapper">
+                                    <div class="facebook__headline-website">
+                                        <span class="facebook__cta-website">{websiteName}</span>
+                                        <span class="facebook__cta-headline">{headlineCopy}</span>
+                                    </div>
+                                    <div class="facebook-cta-button">{selectedPreviewCTA.name}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-if="postSrc.length < 10" class="ib_facebook-slide" id="facebook__carousel-slide">
+                            <uploader :multiple="true" style="width: 100%;" @submit-image="uploadImage($event,'body')" @validated="validation($event)">
+                                <div class="post-wrapper" :style="getComputedHeight">
+                                    <span class="placeholder-info">
+                                        1:1<span>1080x1080px
+                                recommended</span>
+                                    </span>
+                                </div>
+                            </uploader>
+                            <div class="facebook__carousel-cta">
+                                <div class="facebook__cta-wrapper">
+                                    <div class="facebook__headline-website">
+                                        <span class="facebook__cta-website">{websiteName}</span>
+                                        <span class="facebook__cta-headline">{headlineCopy}</span>
+                                    </div>
+                                    <div class="facebook-cta-button">{selectedPreviewCTA.name}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-if="left" class="btn btn-prev" aria-label="Previous slide" @click="slidePrevious">
+                        <span class="left-arrow">&#10094;</span>
+                    </div>
+                    <div class="btn btn-next" aria-label="Next slide" @click="slideNext">
+                        <span class="right-arrow">&#10095;</span>
+                    </div>
+                </div>
+                <div class="facebook__cta-wrapper" v-if="activeAd.id !== 4">
+                    <div class="facebook__headline-website">
+                        <span class="facebook__cta-website">{websiteUrl}</span>
+                        <span class="facebook__cta-headline">{headlineCopy}</span>
+                    </div>
+                    <div class="facebook-cta-button">{selectedPreviewCTA.name}</div>
+                </div>
+                <div class="facebook__like-comment-section">
+                    <div class="facebook_react-sec-wrapper">
+                        <div class="facebook__react-emoticon">
+                            <img :src="getImgUrl(reaction)" v-for="reaction in platformSelectedReactions" :key="reaction">
+                        </div>
+                        <div class="react-sec">Joe Soap and {likes} {likes.length > 1 ? 'others' : 'other'}
+                          </div>
+                    </div>
+                    <div class="comment_share-sec">{commentCount} {commentCount.length > 1 ? 'comments' : 'comment'} {shareCount} {shareCount.length > 1 ? 'shares' : 'share'}
+                        </div>
+                </div>
+                <div class="facebook__like-comment-cta">
+                    <div class="wrapper">
+                        <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M18 10.3282C18 9.7635 17.6875 9.27018 17.2228 9.00309C17.2132 8.9975 17.2093 8.98417 17.2185 8.97729C17.5869 8.69601 17.8252 8.25903 17.8252 7.76657C17.8252 6.91757 17.1214 6.22899 16.2529 6.22899H11.4478C12.3307 1.70913 10.105 0.810231 9.2181 1.03044C8.68833 1.16162 8.63194 1.01668 8.7281 2.04288L8.77356 3.74089C8.77793 3.91078 8.75695 4.08411 8.70668 4.25615C8.65642 4.42818 8.58036 4.58603 8.48463 4.72796L6.19551 8.10334V16.4768L14.5932 16.476C15.4206 16.4308 16.078 15.7594 16.078 14.9397C16.078 14.6928 16.0173 14.4601 15.9115 14.2537C15.9071 14.2447 15.9089 14.2326 15.9189 14.2309C16.6546 14.1023 17.2136 13.4756 17.2136 12.7195C17.2136 12.3776 17.0982 12.0632 16.9055 11.8077C16.9007 11.8021 16.9037 11.7935 16.9112 11.7914C17.5428 11.5918 18 11.0121 18 10.3282ZM1 17H6.19551V6.47478H1V17Z" stroke="#66676B" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Like</span>
+                    </div>
+                    <div class="wrapper">
+                        <svg width="17" height="19" viewBox="0 0 17 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M4 14.0001H4.96491V17L8.92982 14.0001H13C14.6569 14.0001 16 12.657 16 11.0001V4C16 2.34315 14.6569 1 13 1H4C2.34315 1 1 2.34315 1 4V11.0001C1 12.657 2.34315 14.0001 4 14.0001Z" stroke="#66676B"/>
+                        </svg>
+                        <span>Comment</span>
+                    </div>
+                    <div class="wrapper">
+                        <svg width="18" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M9.32712 11.9675V15.3611C9.32712 15.624 9.53424 15.8371 9.78974 15.8371C9.91243 15.8371 10.0301 15.787 10.1169 15.6977L16.8645 8.75513C17.0452 8.56925 17.0452 8.26787 16.8645 8.08199L10.1169 1.13941C9.9362 0.953529 9.64328 0.953529 9.46262 1.13941C9.37586 1.22868 9.32712 1.34974 9.32712 1.47598V5.08668C4.94676 5.08668 1 11.6723 1 15.0525C1 18.0468 2.46808 13.0873 9.32712 11.9675Z" stroke="#66676B"/>
+                        </svg>
+                        <span>Share</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="preview-download-wrapper">
+        <button @click="downloadPng('facebook-mockup-preview','facebook-ad-mockup')" class="mockup-download-btn mockup-btn">Download PNG
+                </button>
+        <button v-if="canCopy" @click="copyImage('facebook-mockup-preview')" class="mockup-copy-btn" @mouseleave="copied = false">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0.667969 17.8287H13.7989V3.98828H0.667969V17.8287ZM2.76882 5.89717H11.6978V15.9195H2.76882V5.89717Z" fill="black"/>
+                <path d="M4.86914 0.169922V3.0334H6.96971V2.07877H15.8987V12.1018H14.8481V14.0106H17.9992V0.170206L4.86914 0.169922Z" fill="black"/>
+            </svg>
+            <span v-if="!copied" class="--tooltip-copy">Copy to clipboard</span>
+            <span v-else class="--tooltip-copy --sucess">
+                Copied
+                <svg width="13" height="14" viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg" class="icon--check">
+                    <path d="M1 7.5L5 11.5L12 1" stroke="black" stroke-width="2"/>
+                </svg>
+            </span>
+        </button>
+    </div>
+</div>
+</div></div></div></div></section></div><script async src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.2.0/glide.min.js" integrity="sha512-IkLiryZhI6G4pnA3bBZzYCT9Ewk87U4DGEOz+TnRD3MrKqaUitt+ssHgn2X/sxoM7FxCP/ROUp6wcxjH/GcI5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    var adFormatHeightMixin = {
+        data() {
+            return {
+                showGlideControls: false,
+            }
+        },
+        created() {
+            this.activeAd = this.adTypes[0];
+        },
+        computed: {
+            getComputedHeight() {
+                let previewWidth = document.getElementById('mockup-download-img').offsetWidth - 50;
+                let affectiveHeight = `${(this.activeAd.heightR / this.activeAd.widthR) * previewWidth}px` || '400px';
+                return {
+                    height: affectiveHeight
+                };
+            },
+        },
+        mounted() {
+            this.setActiveTab()
+            this.toggleGlideControllers();
+            this.$nextTick( () => {
+                this.setHeight(80);
+            }
+            )
+            window.addEventListener('resize', (event) => {
+                this.setActiveTab()
+                this.setHeight(80);
+                this.toggleGlideControllers();
+            }
+            , true)
+            this.checkBrowserCompatibility()
+        },
+        methods: {
+            switchTab(tab) {
+                this.activeTab = tab
+                this.$nextTick( () => {
+                    if (this.activeTab === 'preview')
+                        this.setPreviewRatio()
+                }
+                )
+            },
+            checkBrowserCompatibility() {
+                var isFirefox = typeof InstallTrigger !== 'undefined';
+                if (isFirefox) {
+                    this.canCopy = false
+                }
+            },
+            setPreviewRatio() {
+                let el = document.getElementById('mockup-download-img')
+                let previewWidth = el.offsetWidth - (window.innerWidth <= 765 ? 34 : 3)
+                let target = document.getElementById(this.activeAd.id === 3 ? 'story-body' : 'post-body')
+                let affectiveHeight = `${(this.activeAd.heightR / this.activeAd.widthR) * previewWidth}px` || '400px';
+
+                if (target) {
+                    target.style.height = affectiveHeight
+                }
+            },
+            setActiveTab() {
+                if (window.innerWidth <= 1024) {
+                    this.activeTab = 'controls'
+                } else {
+                    this.activeTab = 'both'
+                }
+            },
+            toggleGlideControllers() {
+                let glideWrap = document.getElementById('mockup-type-wrapper');
+                if (glideWrap && glideWrap.clientWidth <= glideWrap.parentNode.clientWidth) {
+                    this.showGlideControls = false;
+                } else {
+                    this.showGlideControls = true;
+                }
+            }
+        }
+    }
+</script>
+<script>
+    var uploadMixin = {
+        data: {
+            dpSrc: null,
+            postSrc: [],
+        },
+        methods: {
+            uploadImage(fileset, location, index) {
+                const files = Array.from(fileset)
+                files.forEach(file => {
+                    let src = URL.createObjectURL(file)
+                    if (location === 'header') {
+                        this.dpSrc = src
+                    } else {
+                        if (index >= 0) {
+                            let posts = [...this.postSrc]
+                            posts[index] = src
+                            this.postSrc = [...posts]
+                        } else {
+                            this.postSrc.push(src)
+                        }
+                    }
+                }
+                )
+            },
+            deletePost(post) {
+                this.postSrc = this.postSrc.filter(e => e !== post)
+            },
+            validation(e) {
+                console.log(e)
+            },
+        }
+    }
+</script>
+<script>
+    var generalMixin = {
+        data: {
+            dpSrc: null,
+            postSrc: [],
+        },
+        methods: {
+            downloadPng(target, name) {
+                var preview = document.getElementById(target)
+                html2canvas(preview).then(function(canvas) {
+                    var link = document.createElement('a');
+                    link.download = name + '.png';
+                    link.href = canvas.toDataURL();
+                    link.click();
+                })
+            },
+            copyImage(target) {
+                var preview = document.getElementById(target)
+                navigator.permissions.query({
+                    name: "clipboard-write"
+                }).then( (result) => {
+                    if (result.state == "granted" || result.state == "prompt") {
+                        html2canvas(preview).then(canvas => canvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({
+                            [blob.type]: blob
+                        })])))
+                        this.copied = true
+                    }
+                }
+                )
+            },
+            numberInput(e, inputName) {
+                const SI_SYMBOL = ["", "k", "M", "B", "T", "P", "E"];
+                this[inputName] = this.abbreviateNumber(e.target.value, SI_SYMBOL)
+            },
+            abbreviateNumber(number, SI_SYMBOL) {
+
+                var tier = Math.log10(Math.abs(number)) / 3 | 0;
+                if (tier == 0)
+                    return number;
+                tier = tier > 6 ? 6 : tier
+                var suffix = SI_SYMBOL[tier];
+                var scale = Math.pow(10, tier * 3);
+                var scaled = number / scale;
+                return scaled.toFixed(1) + suffix;
+            },
+            checkIfNumber(event) {
+                const regex = new RegExp(/(^[0-9]*$)|(Backspace|Tab|Delete|ArrowLeft|ArrowRight)/);
+                return !event.key.match(regex) && event.preventDefault();
+            },
+        }
+    }
+</script>
+<script>
+    var captionMixin = {
+        data: {
+            caption: '',
+            text: 'This is caption that will display on the final mockup. You can write anything.',
+            displayCaptionValue: 'This is caption that will display on the final mockup. You can write anything.',
+            captionValue: '',
+            showSeeMore: false,
+            count: 0
+        },
+        methods: {
+            addCaption(e, charLimit, platform) {
+                if (this.caption.length < charLimit || e.target.selectionStart < charLimit) {
+                    this.setDisplayCaptionValue(charLimit, platform)
+                    if (this.displayCaptionValue === ' ') {
+                        this.captionValue = ''
+                    }
+                    if (this.caption.length > charLimit) {
+                        this.setCaptionValue(platform)
+                        console.log({
+                            val: this.captionValue,
+                            dis: this.displayCaptionValue
+                        })
+                    }
+                } else {
+                    if (this.displayCaptionValue === ' ' || this.displayCaptionValue === this.text || this.displayCaptionValue.length < charLimit) {
+                        this.setDisplayCaptionValue(charLimit, platform)
+                    }
+                    this.count = 0
+                    this.setCaptionValue(platform)
+                }
+            },
+            styleCaption(words, target, platform) {
+                let displaySentence = '';
+                words.forEach( (word, i) => {
+                    if (word.startsWith('@') || word.startsWith('#')) {
+                        words[i] = `<span style="color:${platform === 'Tiktok' ? '#FFFFFF' : '#1876F2'}">${word}</span> `
+                    }
+                    displaySentence = displaySentence + ' ' + words[i]
+                    this[target] = displaySentence
+                }
+                );
+            },
+            setDisplayCaptionValue(charLimit, platform) {
+                let firstHalf = this.caption.slice(0, charLimit)
+                const words = firstHalf.split(" ");
+                this.styleCaption(words, 'displayCaptionValue', platform)
+                this.showSeeMore = this.caption.length < charLimit ? false : true
+                this.count = this.captionValue === ' ' ? 1 : 0
+            },
+            setCaptionValue(platform) {
+                const words = this.caption.split(" ");
+                this.styleCaption(words, 'captionValue', platform)
+                this.showSeeMore = true
+            },
+            seeMoreExpand() {
+                this.count = 1
+                this.showSeeMore = false
+            },
+        }
+    }
+</script>
+<script>
+    var unlockCalculator = {
+        data() {
+            return {
+                profileType: "",
+                popupClass: "",
+                email: "",
+                subscriptionError: null,
+                subscribed: false,
+                beehiivLoading: false,
+                cookieName: 'Unlock / Calculator'
+            };
+        },
+        methods: {
+            toggleScroll(disable) {
+                document.body.style.overflow = disable ? "hidden" : "";
+            },
+            outsideClick(event) {
+                if (event.target.classList.contains('popupOverlay') && this.profileType === "creator") {
+                    this.hidePopup();
+                }
+            },
+            setProfileType(type) {
+                this.profileType = type;
+            },
+            async handleSubscription() {
+                if (this.beehiivLoading)
+                    return;
+                this.beehiivLoading = true;
+                this.subscriptionError = null;
+
+                try {
+                    if (!this.isValidEmail(this.email)) {
+                        throw new Error("Invalid email address.");
+                    }
+                    const result = await beehiivAPI.subscribe(this.email, this.cookieName);
+                    if (result.error)
+                        throw new Error(result.error);
+                    this.subscribed = true;
+                } catch (error) {
+                    this.subscriptionError = error.message;
+                } finally {
+                    this.beehiivLoading = false;
+                }
+            },
+            async hidePopup() {
+                await setCookie(this.cookieName, "true", 90);
+                this.popupClass = "";
+                this.toggleScroll(false);
+            },
+            isValidEmail(email) {
+                return /\S+@\S+\.\S+/.test(email);
+            }
+        },
+        delimiters: ["{", "}"],
+    };
+</script>
+<script>
+    Vue.component('uploader', {
+        data: function() {
+            return {
+                isDragEnter: false,
+                hasSelection: false,
+                displayText: '',
+                value1: '',
+            }
+        },
+        props: {
+            tabindex: [String, Number],
+            drop: {
+                type: Boolean,
+                default: false,
+            },
+            button: {
+                type: Boolean,
+                default: false,
+            },
+            multiple: {
+                type: Boolean,
+                default: false,
+            },
+
+            extensions: {
+                type: String,
+                default: '.jpg,.svg,.png,.jpeg',
+            },
+
+            maxFileSize: {
+                type: Number,
+                default: 4000,
+                validator: value => {
+                    return value > 0;
+                }
+                ,
+            },
+            height: {
+                type: String,
+                default: 'auto',
+            },
+            width: {
+                type: String,
+                default: '',
+            },
+            label: String,
+            validateFn: {
+                type: Function,
+                default: () => true,
+            },
+        },
+        methods: {
+            openPicker(e) {
+                e.preventDefault()
+                this.$refs.fileInput.click();
+            },
+            handleFileChange(e) {
+                e.preventDefault()
+
+                const files = e.target.files || e.dataTransfer.files;
+                if (this.multiple && files.length > 10) {
+                    this.$refs.messageError.innerHTML = 'You can only upload maximum 10 files';
+                    return
+                }
+                if (files[0]) {
+                    this.preprocessFiles(files);
+                }
+            },
+            handleDrop(e) {
+                this.isDragEnter = false;
+                this.preprocessFiles(e.dataTransfer.files);
+            },
+            checkFileExtensions(files) {
+
+                const extList = [...new Set(this.extensions.toLowerCase().split(',').filter(Boolean))];
+                const list = Array.from(files);
+
+                const invalidFileIndex = list.findIndex(file => {
+                    const ext = `.${file.name.toLowerCase().split('.').pop()}`;
+                    return extList.includes(ext);
+                }
+                );
+
+                return invalidFileIndex === -1;
+            },
+            checkFileSize(files) {
+                if (Number.isNaN(this.maxFileSize)) {
+                    return true;
+                }
+                const list = Array.from(files);
+
+                const invalidFileIndex = list.findIndex(file => file.size > this.maxFileSize);
+
+                return invalidFileIndex === 0;
+            },
+            validate(files) {
+                const err = document.querySelector('.image-error-text');
+
+                if (!this.multiple && files.length > 1) {
+                    err.innerHTML = 'You can only upload one file';
+                    return 'MULTIFILES_ERROR';
+                }
+
+                if (this.checkFileExtensions(files)) {
+                    err.innerHTML = 'You can only upload .png or .jpg files';
+                    return 'EXTENSION_ERROR';
+                }
+
+                if (!this.checkFileSize(files)) {
+                    err.innerHTML = 'File size is too large';
+                    return 'FILE_SIZE_ERROR';
+                }
+
+                return true;
+            },
+            preprocessFiles(files) {
+                const result = this.validate(files);
+                this.$emit('validated', result, files);
+
+                if (result === true) {
+                    this.$emit('submit-image', files);
+                }
+
+                this.$refs.fileInput.value = '';
+            },
+        },
+        computed: {
+            computedStyle() {
+                return {
+                    height: this.height,
+                    width: this.width,
+                };
+            },
+            placeholder() {
+                if (this.label) {
+                    return this.label;
+                }
+                return this.multiple ? 'Choose files' : 'Choose a file';
+            },
+        },
+
+        template: `
+          <label class="mockup__file-uploader" :class="{ 'mockup-drag-enter': isDragEnter }">
+              <template v-if="!drop && button">
+                  <button class="upload_profile-picture-btn mockup-btn" @click="openPicker">
+                    Upload Image
+                  </button>
+              </template>
+              <div v-else-if="drop" class="file--upload__draggable" ref="LvDroppable" @dragenter.prevent="isDragEnter = true" @dragover.prevent="isDragEnter = true" @dragleave.prevent="isDragEnter = false" @drop.prevent="handleDrop" :style="computedStyle">
+                    <slot></slot>
+              </div>
+              <template v-else>
+                    <slot></slot>
+              </template>
+              <input ref="fileInput" type="file" :accept="extensions" :tabindex="tabindex" :multiple="multiple" @change="handleFileChange($event)" />
+          </label>
+      `
+    })
+    Vue.component('dropdown', {
+        data: function() {
+            return {
+                selectedOption: this.optionselected,
+                isOpenDropdown: false
+            }
+        },
+        props: {
+            options: {
+                type: Array,
+            },
+            optionselected: {
+                type: Object
+            }
+        },
+        watch: {
+            optionselected(value) {
+                this.selectedOption = value
+            }
+        },
+        methods: {
+            openDropdown(e) {
+                this.isOpenDropdown = true
+                window.addEventListener('click', (event) => {
+                    if (this.$refs.dropdown && !this.$refs.dropdown.contains(event.target)) {
+                        this.closeDropdown()
+                    }
+                }
+                );
+            },
+            closeDropdown(e) {
+                this.isOpenDropdown = false
+            },
+            selectOption(option) {
+                this.selectedOption = option
+                this.$emit('option-select', this.selectedOption);
+
+            },
+        },
+
+        template: `
+          <div class="mockup_dropdown-wrapper">      
+              <div class="mockup-dropdown"  @click.prevent="openDropdown" ref="dropdown"  tabindex="1">     
+                      <a href="javascript:void(0)" v-html="selectedOption.name">
+                          Select CTA
+                      </a>
+                      <svg width="11" height="6" viewBox="0 0 11 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1 1L5.4698 5L10 1" stroke="black"/>
+                      </svg>
+                  </div>
+                  <ul class="mockup-dropdown__dropdown-list" v-show="isOpenDropdown">
+                      <li class="list-item" v-for="option in options" @click="selectOption(option)">
+                          <p class="list-title"  v-html="option.name"></p>
+                      </li>            
+                  </ul>
+              </div>
+          </div>
+      `
+    })
+    var app = new Vue({
+        el: '#mockup_builder',
+        mixins: [adFormatHeightMixin, uploadMixin, generalMixin, captionMixin, unlockCalculator],
+        data: {
+            ctaOptions: [{
+                name: 'Download',
+                code: 'DW'
+            }, {
+                name: 'Learn more',
+                code: 'LN'
+            }, {
+                name: 'Apply now',
+                code: 'AN'
+            }, {
+                name: 'Shop now',
+                code: 'SN'
+            }, {
+                name: 'Watch more',
+                code: 'WM'
+            }, {
+                name: 'Subscribe',
+                code: 'SB'
+            }, {
+                name: 'Find Yout Groups',
+                code: 'FYG'
+            }, {
+                name: 'Try in Camera',
+                code: 'TIC'
+            }, {
+                name: 'Sign up',
+                code: 'SU'
+            }, {
+                name: 'Book now',
+                code: 'BN'
+            }, {
+                name: 'Call now',
+                code: 'CN'
+            }, {
+                name: 'Contact us',
+                code: 'CU'
+            }, {
+                name: 'Listen Now',
+                code: 'LN'
+            }, {
+                name: 'Get showtimes',
+                code: 'GST'
+            }, {
+                name: 'Order now',
+                code: 'ORDE'
+            }, {
+                name: 'Get directions',
+                code: 'GDRE'
+            }, {
+                name: 'See menu',
+                code: 'CME'
+            }, {
+                name: 'Get quote',
+                code: 'GQUO'
+            }, {
+                name: 'Send message',
+                code: 'SEM'
+            }, {
+                name: 'Send WhatsApp message',
+                code: 'SENWMSG'
+            }, {
+                name: 'Request time',
+                code: 'RQT'
+            }, {
+                name: 'Dial code',
+                code: 'DIC'
+            }],
+            activeTab: 'controls',
+            profileName: '',
+            websiteUrl: 'WEBSITENAME.COM',
+            websiteName: 'Website Name',
+            headlineCopy: 'Headline copy here',
+            selectedPreviewCTA: {
+                name: 'Shop now',
+                code: 'SN'
+            },
+            likes: 15,
+            commentCount: 1,
+            shareCount: 1,
+            left: 0,
+            activePost: 0,
+            platformReactions: ['facebook-like', 'facebook-anger', 'facebook-sad', 'facebook-heart', 'facebook-hug', 'facebook-surprise', 'facebook-laugh'],
+            platformSelectedReactions: ['facebook-like', 'facebook-surprise', 'facebook-laugh'],
+            adTypes: [{
+                id: 1,
+                type: 'Square',
+                ratio: '1:1',
+                img: '1-1',
+                widthR: 1,
+                heightR: 1,
+                req: 80,
+                resolution: '1080x1080'
+            }, {
+                id: 2,
+                type: 'Landscape',
+                ratio: '16:9',
+                img: '3-2',
+                widthR: 16,
+                heightR: 9,
+                req: 80,
+                resolution: '1920x1080'
+            }, {
+                id: 5,
+                type: 'Tall Video',
+                ratio: '4:5',
+                img: 'portrait',
+                widthR: 4,
+                heightR: 5,
+                req: 80,
+                resolution: '1080x1350'
+            }, {
+                id: 4,
+                type: 'Carousel',
+                ratio: '1:1',
+                img: 'carousel',
+                widthR: 1,
+                heightR: 1,
+                req: 80,
+                resolution: '1080x1080'
+            }, ],
+            activeAd: {
+                id: 1,
+                type: 'Square',
+                ratio: '1:1',
+                img: '1-1',
+                widthR: 1,
+                heightR: 1,
+                req: 80,
+                resolution: '1080x1080'
+            },
+            copied: false,
+            canCopy: true
+        },
+        methods: {
+            optionSelect(e) {
+                this.selectedPreviewCTA = e
+            },
+            getImgUrl(pic) {
+                return './icons/' + pic + '.svg'
+            },
+            adTypeClick(adType) {
+                if (this.activeAd.id !== adType.id) {
+                    this.clearFields()
+                    this.activeAd = adType
+                    this.$nextTick( () => {
+                        this.setHeight(adType.req)
+                    }
+                    )
+                }
+            },
+            toggleReactionSelection(reaction) {
+                if (this.platformSelectedReactions.includes(reaction)) {
+                    const index = this.platformSelectedReactions.indexOf(reaction);
+                    if (index > -1) {
+                        this.platformSelectedReactions.splice(index, 1)
+                    }
+                } else {
+                    if (this.platformSelectedReactions.length >= 4) {
+                        return
+                    }
+                    this.platformSelectedReactions.push(reaction)
+                }
+            },
+            setHeight(req) {
+                document.getElementById('mockup-controls').style.height = (document.getElementById('mockup-preview').clientHeight - req) + 'px'
+            },
+            textInput(e, inputName) {
+                this[inputName] = e.target.value
+            },
+            checkIfNumber(event) {
+                const regex = new RegExp(/(^[0-9]*$)|(Backspace|Tab|Delete|ArrowLeft|ArrowRight)/);
+                return !event.key.match(regex) && event.preventDefault();
+            },
+            onKeyDown() {
+                if (event.code === 'Space')
+                    event.preventDefault()
+            },
+            clearFields() {
+                this.dpSrc = null
+                this.postSrc = []
+                this.caption = ''
+                this.likes = 15
+                this.commentCount = 1
+                this.shareCount = 1
+                this.profileName = ''
+                this.websiteUrl = 'WEBSITENAME.COM'
+                this.websiteName = 'Website Name'
+                this.headlineCopy = 'Headline copy here',
+                this.selectedPreviewCTA = {
+                    name: 'Learn More',
+                    code: 'LM'
+                }
+                this.activePost = 0
+            },
+            updateCurrentPost(val) {
+                this.activePost = val
+            },
+
+            slideNext() {
+                let ele = document.getElementsByClassName('ib-facebook-carousel')[0]
+                this.left += 310
+                if (ele.scrollWidth < (this.left + 310)) {
+                    this.left -= 310
+                }
+                ele.scrollTo({
+                    left: this.left,
+                    behavior: 'smooth',
+                })
+            },
+            slidePrevious() {
+                let ele = document.getElementsByClassName('ib-facebook-carousel')[0]
+                this.left -= 310
+                ele.scrollTo({
+                    left: this.left,
+                    behavior: 'smooth',
+                })
+            },
+        },
+        computed: {
+            getComputedHeight() {
+                let ele = document.getElementById(this.activeAd.id === 4 ? 'facebook__carousel-slide' : 'mockup-download-img')
+                let previewWidth = ele ? this.activeAd.id === 4 ? ele.offsetWidth : ele.offsetWidth - 50 : 300
+                let affectiveHeight = `${(this.activeAd.heightR / this.activeAd.widthR) * previewWidth}px` || '400px';
+                return {
+                    height: affectiveHeight
+                };
+            },
+        },
+        delimiters: ['{', '}'],
+    });
+</script>
+<script>
+    const glide = new Glide('.glide',{
+        type: 'slider',
+        perView: 4,
+        focus: "center",
+        rewind: false,
+        bound: true,
+        gap: 0,
+        breakpoints: {
+            1200: {
+                perView: 4
+            },
+            1080: {
+                perView: 3
+            },
+            1198: {
+                perView: 3
+            },
+            768: {
+                perView: 3
+            },
+            700: {
+                perView: 3
+            },
+            600: {
+                perView: 2
+            },
+            576: {
+                perView: 2
+            },
+            400: {
+                perView: 1
+            },
+        }
+    }).mount()
+    function handleDisableControls() {
+        backBtnEl = document.querySelector('[data-glide-dir="<"]');
+        nextBtnEl = document.querySelector('[data-glide-dir=">"]');
+        if (backBtnEl && nextBtnEl) {
+            if (glide.index === 0) {
+
+                backBtnEl.classList.add('--disabled')
+            } else {
+                backBtnEl.classList.remove('--disabled')
+            }
+            if (glide.index + glide._o.perView === glide._c.Html.slides.length) {
+
+                nextBtnEl.classList.add('--disabled')
+            } else {
+                nextBtnEl.classList.remove('--disabled')
+            }
+        }
+    }
+    glide.on(['build.after', 'run'], function() {
+        handleDisableControls();
+    })
+    handleDisableControls();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.6.8/lottie.min.js" integrity="sha256-HlqBFI4b3mzFNE97JQcgI/uhJvHBI5czBqfVtEeA1Hg=" crossorigin="anonymous"></script>
+
+<!-- Append-only fixes: download/copy CORS-safe, preserve inputs on type change, allow spaces, and anti-darken CSS -->
+<script>
+(function(){
+  function init(){
+    try{
+      // 1) Allow spaces in inputs by blocking upstream Space preventDefault
+      var scope = document.getElementById('mockup_builder') || document;
+      var fields = scope.querySelectorAll('input, textarea');
+      fields.forEach(function(el){
+        el.addEventListener('keydown', function(e){
+          if (e.code === 'Space') {
+            e.stopImmediatePropagation();
+          }
+        }, true);
+      });
+
+      // 2) Patch downloadPng to be CORS-safe and download reliably
+      if (window.app && typeof window.app.downloadPng === 'function' && window.html2canvas) {
+        var __origDownload = window.app.downloadPng.bind(window.app);
+        window.app.downloadPng = function(target, name){
+          var root = document.getElementById(target) || document.querySelector('#mockup_builder');
+          if (!root) return __origDownload(target, name);
+          var imgs = Array.prototype.slice.call(root.querySelectorAll('img'));
+          var prev = imgs.map(function(img){ return img.getAttribute('crossorigin'); });
+          imgs.forEach(function(img){ img.setAttribute('crossorigin', 'anonymous'); });
+          return html2canvas(root, { useCORS: true, allowTaint: false, backgroundColor: null, scale: 2 })
+            .then(function(canvas){
+              return new Promise(function(resolve){
+                if (canvas.toBlob) {
+                  canvas.toBlob(function(blob){
+                    var a = document.createElement('a');
+                    a.download = (name || 'mockup') + '.png';
+                    a.href = URL.createObjectURL(blob);
+                    a.click();
+                    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+                    resolve();
+                  }, 'image/png');
+                } else {
+                  var a = document.createElement('a');
+                  a.download = (name || 'mockup') + '.png';
+                  a.href = canvas.toDataURL('image/png');
+                  a.click();
+                  resolve();
+                }
+              });
+            })
+            .finally(function(){
+              imgs.forEach(function(img, i){
+                if (prev[i] == null) img.removeAttribute('crossorigin');
+                else img.setAttribute('crossorigin', prev[i]);
+              });
+            });
+        };
+      }
+
+      // 3) Patch copyImage to copy the actual image (binary if possible; otherwise data URL)
+      if (window.app && typeof window.app.copyImage === 'function' && window.html2canvas) {
+        window.app.copyImage = function(target){
+          var root = document.getElementById(target) || document.querySelector('#mockup_builder');
+          if (!root) return;
+          return html2canvas(root, { useCORS: true, allowTaint: false, backgroundColor: null, scale: 2 })
+            .then(function(canvas){
+              if (navigator.clipboard && window.ClipboardItem && canvas.toBlob) {
+                return new Promise(function(resolve, reject){
+                  canvas.toBlob(function(blob){
+                    navigator.clipboard.write([new ClipboardItem({[blob.type]: blob})])
+                      .then(resolve)
+                      .catch(function(){
+                        try {
+                          navigator.clipboard.writeText(canvas.toDataURL('image/png')).then(resolve, reject);
+                        } catch(e) { reject(e); }
+                      });
+                  }, 'image/png');
+                });
+              } else if (navigator.clipboard && navigator.clipboard.writeText) {
+                return navigator.clipboard.writeText(canvas.toDataURL('image/png'));
+              }
+            });
+        };
+      }
+
+      // 4) Preserve inputs when changing Ad Type by no-oping clearFields (reversible)
+      if (window.app && typeof window.app.clearFields === 'function') {
+        window.app.__clearFieldsOriginal = window.app.clearFields;
+        window.app.clearFields = function(){ /* keep user inputs */ };
+      }
+
+      // 5) Anti-darken styles (append-only)
+      var style = document.createElement('style');
+      style.setAttribute('data-append-only', 'wp-fixes');
+      style.textContent = [
+        '#mockup_builder, #mockup_builder * { filter: none !important; mix-blend-mode: normal !important; }',
+        '.mockup__file-uploader.mockup-drag-enter, .file--upload__draggable.mockup-drag-enter { background: transparent !important; }',
+        '.preview-image-body { image-rendering: auto !important; opacity: 1 !important; }'
+      ].join('\n');
+      document.head.appendChild(style);
+    } catch(e){ console.warn('append-only fixes failed:', e); }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
+
+<!-- Append-only fixes v2: stronger canvas de-taint, adType no reset, space input, and stylesheet guard -->
+<script>
+(function(){
+  function sameOrigin(url){
+    try {
+      var u = new URL(url, location.href);
+      return u.origin === location.origin;
+    } catch(e) { return true; }
+  }
+
+  function temporarilySanitizeForCapture(root){
+    var undo = [];
+
+    // Disable the broken Typekit stylesheet that 404s
+    var badLinks = Array.prototype.slice.call(document.querySelectorAll('link[rel="stylesheet"]'));
+    badLinks.forEach(function(l){
+      var href = l.getAttribute('href') || '';
+      if (/use\.typekit\.net\/zcm3fvv\.css/i.test(href)) {
+        var prevDisabled = l.disabled;
+        l.disabled = true;
+        undo.push(function(){ l.disabled = prevDisabled; });
+      }
+    });
+
+    // CORS-protect <img> inside root
+    var imgs = Array.prototype.slice.call(root.querySelectorAll('img'));
+    var prevCross = imgs.map(function(img){ return img.getAttribute('crossorigin'); });
+    imgs.forEach(function(img){ img.setAttribute('crossorigin', 'anonymous'); });
+    undo.push(function(){
+      imgs.forEach(function(img, i){
+        if (prevCross[i] == null) img.removeAttribute('crossorigin');
+        else img.setAttribute('crossorigin', prevCross[i]);
+      });
+    });
+
+    // Neutralize cross-origin background images within root
+    var els = Array.prototype.slice.call(root.querySelectorAll('*'));
+    els.push(root);
+    els.forEach(function(el){
+      var cs = getComputedStyle(el);
+      ['backgroundImage', 'maskImage', 'webkitMaskImage'].forEach(function(prop){
+        var v = cs[prop];
+        if (v && v.includes('url(') && /https?:/i.test(v)) {
+          var m = v.match(/url\(([^)]+)\)/i);
+          if (m && m[1]) {
+            var raw = m[1].replace(/['"]/g, '');
+            if (!sameOrigin(raw)) {
+              var prevInline = el.style[prop] || '';
+              var hadStyle = el.getAttribute('style') || '';
+              undo.push(function(){
+                el.style[prop] = prevInline;
+                if (!prevInline) el.setAttribute('style', hadStyle);
+              });
+              el.style[prop] = 'none';
+            }
+          }
+        }
+      });
+    });
+
+    return function restore(){
+      while(undo.length){
+        try { undo.pop()(); } catch(e){}
+      }
+    };
+  }
+
+  function patchOnce(){
+    if (!window.app) return;
+
+    // Allow spaces
+    if (typeof window.app.onKeyDown === 'function') {
+      window.app.onKeyDown = function(){};
+    }
+    var scope = document.getElementById('mockup_builder') || document;
+    scope.addEventListener('keydown', function(e){
+      if (e.code === 'Space') e.stopImmediatePropagation();
+    }, true);
+
+    // Preserve inputs when changing Ad Type
+    if (typeof window.app.adTypeClick === 'function') {
+      var _setHeight = function(req){ try { window.app.setHeight && window.app.setHeight(req); } catch(e){} };
+      window.app.adTypeClick = function(adType){
+        if (this.activeAd && this.activeAd.id !== adType.id) {
+          this.activeAd = adType;
+          this.$nextTick(() => _setHeight(adType.req));
+        }
+      };
+    }
+    if (typeof window.app.clearFields === 'function') {
+      window.app.__clearFieldsOriginal = window.app.clearFields;
+      window.app.clearFields = function(){ /* keep existing inputs */ };
+    }
+
+    // Capture helper with de-taint
+    function capture(root){
+      var restore = temporarilySanitizeForCapture(root);
+      return html2canvas(root, { useCORS: true, allowTaint: false, backgroundColor: null, scale: 2, logging: false })
+        .then(function(canvas){ restore(); return canvas; }, function(err){ restore(); throw err; });
+    }
+
+    // Download
+    if (typeof window.app.downloadPng === 'function') {
+      window.app.downloadPng = function(target, name){
+        var root = document.getElementById(target) || document.querySelector('#mockup_builder');
+        if (!root) return;
+        return capture(root).then(function(canvas){
+          if (canvas.toBlob) {
+            canvas.toBlob(function(blob){
+              var a = document.createElement('a');
+              a.download = (name || 'mockup') + '.png';
+              a.href = URL.createObjectURL(blob);
+              a.click();
+              setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+            }, 'image/png');
+          } else {
+            var a = document.createElement('a');
+            a.download = (name || 'mockup') + '.png';
+            a.href = canvas.toDataURL('image/png');
+            a.click();
+          }
+        });
+      };
+    }
+
+    // Copy
+    if (typeof window.app.copyImage === 'function') {
+      window.app.copyImage = function(target){
+        var root = document.getElementById(target) || document.querySelector('#mockup_builder');
+        if (!root) return;
+        return capture(root).then(function(canvas){
+          if (navigator.clipboard && window.ClipboardItem && canvas.toBlob) {
+            return new Promise(function(resolve, reject){
+              canvas.toBlob(function(blob){
+                navigator.clipboard.write([new ClipboardItem({[blob.type]: blob})])
+                  .then(resolve)
+                  .catch(function(){
+                    try {
+                      navigator.clipboard.writeText(canvas.toDataURL('image/png')).then(resolve, reject);
+                    } catch(e) { reject(e); }
+                  });
+            }, 'image/png');
+            });
+          } else if (navigator.clipboard && navigator.clipboard.writeText) {
+            return navigator.clipboard.writeText(canvas.toDataURL('image/png'));
+          }
+        }).then(() => { try { window.app.copied = true; } catch(e){} });
+      };
+    }
+
+    // Anti-darken CSS (once)
+    if (!document.querySelector('style[data-append-only="wp-fixes"]')) {
+      var style = document.createElement('style');
+      style.setAttribute('data-append-only', 'wp-fixes');
+      style.textContent = [
+        '#mockup_builder, #mockup_builder * { filter: none !important; mix-blend-mode: normal !important; }',
+        '.mockup__file-uploader.mockup-drag-enter, .file--upload__draggable.mockup-drag-enter { background: transparent !important; }',
+        '.preview-image-body { image-rendering: auto !important; opacity: 1 !important; }'
+      ].join('\\n');
+      document.head.appendChild(style);
+    }
+  }
+
+  function init(){ try { patchOnce(); } catch(e){ console.warn('append-only v2 failed:', e); } }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+  window.addEventListener('load', function(){ setTimeout(init, 100); });
+})();
+</script>
+
+
+<!-- Append-only fixes v3: inline SVG emojis for capture + FB profile link helper (non-disruptive) -->
+<script>
+(function(){
+  function sameOrigin(url){
+    try { var u = new URL(url, location.href); return u.origin === location.origin; } catch(e) { return true; }
+  }
+
+  // Convert <img src="*.svg"> inside root to data: URLs to avoid taint & ensure render
+  function inlineSvgs(root){
+    var imgs = Array.prototype.slice.call(root.querySelectorAll('img'));
+    var pending = imgs.map(function(img){
+      var src = (img.getAttribute('src') || '').trim();
+      if (!src || src.startsWith('data:') || !/\.svg(\?|#|$)/i.test(src)) return Promise.resolve(null);
+      try {
+        var url = new URL(src, location.href).href;
+      } catch(e) {
+        return Promise.resolve(null);
+      }
+      // Only attempt to inline if same-origin; otherwise leave it as-is to avoid CORS blocks
+      if (!sameOrigin(url)) return Promise.resolve(null);
+      return fetch(url, { credentials: 'same-origin' })
+        .then(function(r){ return r.ok ? r.text() : Promise.reject(new Error('bad status')); })
+        .then(function(svgText){
+          var encoded = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgText);
+          var prev = img.getAttribute('src');
+          img.setAttribute('src', encoded);
+          return function(){ img.setAttribute('src', prev); };
+        })
+        .catch(function(){ return null; });
+    });
+    return Promise.all(pending).then(function(restores){
+      restores = restores.filter(Boolean);
+      return function restore(){ restores.forEach(function(fn){ try{ fn(); }catch(e){} }); };
+    });
+  }
+
+  function temporarilySanitizeForCapture(root){
+    var undo = [];
+
+    // Disable the broken Typekit stylesheet that 404s
+    var badLinks = Array.prototype.slice.call(document.querySelectorAll('link[rel="stylesheet"]'));
+    badLinks.forEach(function(l){
+      var href = l.getAttribute('href') || '';
+      if (/use\.typekit\.net\/zcm3fvv\.css/i.test(href)) {
+        var prevDisabled = l.disabled;
+        l.disabled = true;
+        undo.push(function(){ l.disabled = prevDisabled; });
+      }
+    });
+
+    // CORS-protect <img> inside root
+    var imgs = Array.prototype.slice.call(root.querySelectorAll('img'));
+    var prevCross = imgs.map(function(img){ return img.getAttribute('crossorigin'); });
+    imgs.forEach(function(img){ img.setAttribute('crossorigin', 'anonymous'); });
+    undo.push(function(){
+      imgs.forEach(function(img, i){
+        if (prevCross[i] == null) img.removeAttribute('crossorigin');
+        else img.setAttribute('crossorigin', prevCross[i]);
+      });
+    });
+
+    // Neutralize cross-origin background images within root
+    var els = Array.prototype.slice.call(root.querySelectorAll('*'));
+    els.push(root);
+    els.forEach(function(el){
+      var cs = getComputedStyle(el);
+      ['backgroundImage', 'maskImage', 'webkitMaskImage'].forEach(function(prop){
+        var v = cs[prop];
+        if (v && v.includes('url(') && /https?:/i.test(v)) {
+          var m = v.match(/url\(([^)]+)\)/i);
+          if (m && m[1]) {
+            var raw = m[1].replace(/['"]/g, '');
+            if (!sameOrigin(raw)) {
+              var prevInline = el.style[prop] || '';
+              var hadStyle = el.getAttribute('style') || '';
+              undo.push(function(){
+                el.style[prop] = prevInline;
+                if (!prevInline) el.setAttribute('style', hadStyle);
+              });
+              el.style[prop] = 'none';
+            }
+          }
+        }
+      });
+    });
+
+    return function restore(){
+      while(undo.length){
+        try { undo.pop()(); } catch(e){}
+      }
+    };
+  }
+
+  function capture(root){
+    var restoreSan = temporarilySanitizeForCapture(root);
+    return inlineSvgs(root)
+      .then(function(restoreSvgs){
+        return html2canvas(root, { useCORS: true, allowTaint: false, backgroundColor: null, scale: 2, logging: false })
+          .then(function(canvas){ restoreSvgs && restoreSvgs(); restoreSan(); return canvas; },
+                function(err){ restoreSvgs && restoreSvgs(); restoreSan(); throw err; });
+      });
+  }
+
+  function patchOnce(){
+    if (!window.app) return;
+
+    // Allow spaces
+    if (typeof window.app.onKeyDown === 'function') window.app.onKeyDown = function(){};
+    var scope = document.getElementById('mockup_builder') || document;
+    scope.addEventListener('keydown', function(e){ if (e.code === 'Space') e.stopImmediatePropagation(); }, true);
+
+    // Preserve inputs on Ad Type switch
+    if (typeof window.app.adTypeClick === 'function') {
+      var _setHeight = function(req){ try { window.app.setHeight && window.app.setHeight(req); } catch(e){} };
+      window.app.adTypeClick = function(adType){
+        if (this.activeAd && this.activeAd.id !== adType.id) {
+          this.activeAd = adType;
+          this.$nextTick(() => _setHeight(adType.req));
+        }
+      };
+    }
+    if (typeof window.app.clearFields === 'function') {
+      window.app.__clearFieldsOriginal = window.app.clearFields;
+      window.app.clearFields = function(){ /* keep inputs */ };
+    }
+
+    // Download
+    if (typeof window.app.downloadPng === 'function') {
+      window.app.downloadPng = function(target, name){
+        var root = document.getElementById(target) || document.querySelector('#mockup_builder');
+        if (!root) return;
+        return capture(root).then(function(canvas){
+          if (canvas.toBlob) {
+            canvas.toBlob(function(blob){
+              var a = document.createElement('a');
+              a.download = (name || 'mockup') + '.png';
+              a.href = URL.createObjectURL(blob);
+              a.click();
+              setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+            }, 'image/png');
+          } else {
+            var a = document.createElement('a');
+            a.download = (name || 'mockup') + '.png';
+            a.href = canvas.toDataURL('image/png');
+            a.click();
+          }
+        });
+      };
+    }
+
+    // Copy
+    if (typeof window.app.copyImage === 'function') {
+      window.app.copyImage = function(target){
+        var root = document.getElementById(target) || document.querySelector('#mockup_builder');
+        if (!root) return;
+        return capture(root).then(function(canvas){
+          if (navigator.clipboard && window.ClipboardItem && canvas.toBlob) {
+            return new Promise(function(resolve, reject){
+              canvas.toBlob(function(blob){
+                navigator.clipboard.write([new ClipboardItem({[blob.type]: blob})])
+                  .then(resolve)
+                  .catch(function(){
+                    try {
+                      navigator.clipboard.writeText(canvas.toDataURL('image/png')).then(resolve, reject);
+                    } catch(e) { reject(e); }
+                  });
+              }, 'image/png');
+            });
+          } else if (navigator.clipboard && navigator.clipboard.writeText) {
+            return navigator.clipboard.writeText(canvas.toDataURL('image/png'));
+          }
+        }).then(() => { try { window.app.copied = true; } catch(e){} });
+      };
+    }
+
+    // Anti-darken CSS once
+    if (!document.querySelector('style[data-append-only="wp-fixes"]')) {
+      var style = document.createElement('style');
+      style.setAttribute('data-append-only', 'wp-fixes');
+      style.textContent = [
+        '#mockup_builder, #mockup_builder * { filter: none !important; mix-blend-mode: normal !important; }',
+        '.mockup__file-uploader.mockup-drag-enter, .file--upload__draggable.mockup-drag-enter { background: transparent !important; }',
+        '.preview-image-body { image-rendering: auto !important; opacity: 1 !important; }'
+      ].join('\\n');
+      document.head.appendChild(style);
+    }
+
+    // FB profile helper (append-only DOM; non-breaking)
+    if (!document.querySelector('[data-fb-helper="true"]')) {
+      var target = document.querySelector('.profile__input-wrapper .mockup__title');
+      if (target) {
+        var wrap = document.createElement('div');
+        wrap.setAttribute('data-fb-helper', 'true');
+        wrap.style.margin = '8px 0 16px 0';
+        wrap.innerHTML = ''
+          + '<h4 class="mockup__title" style="margin-bottom:6px;">Facebook Page link (optional)</h4>'
+          + '<div class="input-wrapper" style="display:flex;gap:8px;">'
+            + '<input type="text" class="mockup-input" placeholder="https://www.facebook.com/pagename" style="flex:1;" />'
+            + '<button type="button" class="mockup-btn">Fetch</button>'
+          + '</div>'
+          + '<small>Fetches the page name and opens the profile photo in a new tab so you can save & upload it (prevents export taint).</small>';
+        target.parentNode.insertBefore(wrap, target.nextSibling);
+
+        var input = wrap.querySelector('input');
+        var btn = wrap.querySelector('button');
+
+        function parseUsername(urlStr){
+          try { var u = new URL(urlStr); var parts = u.pathname.split('/').filter(Boolean); return parts[0] || ''; }
+          catch(e){ return ''; }
+        }
+
+        btn.addEventListener('click', function(){
+          var username = parseUsername(input.value.trim());
+          if (!username) return;
+          try { if (!app.profileName) app.profileName = username; } catch(e){}
+          var picUrl = 'https://graph.facebook.com/' + username + '/picture?type=large';
+          // Open the image in a new tab so the user can save+upload (avoids CORS taint in export)
+          var a = document.createElement('a');
+          a.href = picUrl;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          a.click();
+        });
+      }
+    }
+  }
+
+  function init(){ try { patchOnce(); } catch(e){ console.warn('append-only v3 failed:', e); } }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+  window.addEventListener('load', function(){ setTimeout(init, 100); });
+})();
+</script>
+
+
+<!-- Append-only fixes v4: offline-safe SVG emojis via registry + FB upload helper -->
+<script>
+(function(){
+  // 0) Offline-safe SVG icon registry (data URIs) — paste your real SVGs if you prefer.
+  // Keys should match whatever you pass to getImgUrl('<key>') => './icons/<key>.svg'
+  window.__ICON_REGISTRY = Object.assign({}, window.__ICON_REGISTRY || {}, {
+    'facebook-like': 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#1877F2"/><text x="10" y="14" font-size="12" text-anchor="middle">👍</text></svg>'),
+    'facebook-heart': 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#F02849"/><text x="10" y="14" font-size="12" text-anchor="middle">❤</text></svg>'),
+    'facebook-laugh': 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#FFDA6A"/><text x="10" y="14" font-size="12" text-anchor="middle">😂</text></svg>'),
+    'facebook-surprise': 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#FFDA6A"/><text x="10" y="14" font-size="12" text-anchor="middle">😮</text></svg>'),
+    'facebook-sad': 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#FFDA6A"/><text x="10" y="14" font-size="12" text-anchor="middle">😢</text></svg>'),
+    'facebook-anger': 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#E85D33"/><text x="10" y="14" font-size="12" text-anchor="middle">😡</text></svg>')
+  });
+
+  function sameOrigin(url){
+    try { var u = new URL(url, location.href); return u.origin === location.origin; } catch(e) { return true; }
+  }
+
+  function replaceSvgWithRegistry(root){
+    var imgs = Array.prototype.slice.call(root.querySelectorAll('img'));
+    var restores = [];
+    imgs.forEach(function(img){
+      var src = img.getAttribute('src') || '';
+      if (!src || src.startsWith('data:')) return;
+      // try to match ./icons/<name>.svg
+      var m = src.match(/(?:^|\/)icons\/([A-Za-z0-9_-]+)\.svg(?:[?#].*)?$/);
+      if (m && m[1]) {
+        var key = m[1];
+        var dataUri = window.__ICON_REGISTRY[key];
+        if (dataUri) {
+          var prev = img.getAttribute('src');
+          img.setAttribute('src', dataUri);
+          restores.push(function(){ img.setAttribute('src', prev); });
+        } else if (location.protocol === 'file:') {
+          console.warn('[mockup] Missing icon in __ICON_REGISTRY for', key, '— running from file:// so browser will block fetch; please paste SVG into registry.');
+        }
+      }
+    });
+    return function restore(){ restores.forEach(function(fn){ try{ fn(); }catch(e){} }); };
+  }
+
+  function temporarilySanitizeForCapture(root){
+    var undo = [];
+
+    // Disable the broken Typekit stylesheet that 404s
+    var badLinks = Array.prototype.slice.call(document.querySelectorAll('link[rel="stylesheet"]'));
+    badLinks.forEach(function(l){
+      var href = l.getAttribute('href') || '';
+      if (/use\.typekit\.net\/zcm3fvv\.css/i.test(href)) {
+        var prevDisabled = l.disabled;
+        l.disabled = true;
+        undo.push(function(){ l.disabled = prevDisabled; });
+      }
+    });
+
+    // CORS-protect <img> inside root
+    var imgs = Array.prototype.slice.call(root.querySelectorAll('img'));
+    var prevCross = imgs.map(function(img){ return img.getAttribute('crossorigin'); });
+    imgs.forEach(function(img){ img.setAttribute('crossorigin', 'anonymous'); });
+    undo.push(function(){
+      imgs.forEach(function(img, i){
+        if (prevCross[i] == null) img.removeAttribute('crossorigin');
+        else img.setAttribute('crossorigin', prevCross[i]);
+      });
+    });
+
+    // Neutralize cross-origin background images within root
+    var els = Array.prototype.slice.call(root.querySelectorAll('*'));
+    els.push(root);
+    els.forEach(function(el){
+      var cs = getComputedStyle(el);
+      ['backgroundImage', 'maskImage', 'webkitMaskImage'].forEach(function(prop){
+        var v = cs[prop];
+        if (v && v.includes('url(') && /https?:/i.test(v)) {
+          var m = v.match(/url\(([^)]+)\)/i);
+          if (m && m[1]) {
+            var raw = m[1].replace(/['"]/g, '');
+            if (!sameOrigin(raw)) {
+              var prevInline = el.style[prop] || '';
+              var hadStyle = el.getAttribute('style') || '';
+              undo.push(function(){
+                el.style[prop] = prevInline;
+                if (!prevInline) el.setAttribute('style', hadStyle);
+              });
+              el.style[prop] = 'none';
+            }
+          }
+        }
+      });
+    });
+
+    return function restore(){
+      while(undo.length){
+        try { undo.pop()(); } catch(e){}
+      }
+    };
+  }
+
+  function capture(root){
+    var restoreSan = temporarilySanitizeForCapture(root);
+    var restoreIcons = replaceSvgWithRegistry(root);
+    return html2canvas(root, { useCORS: true, allowTaint: false, backgroundColor: null, scale: 2, logging: false })
+      .then(function(canvas){ restoreIcons(); restoreSan(); return canvas; },
+            function(err){ restoreIcons(); restoreSan(); throw err; });
+  }
+
+  function patchOnce(){
+    if (!window.app) return;
+
+    // Keep v3 behaviors (spaces / preserve inputs / anti-darken / download & copy patches)
+    // Only change: capture() now calls replaceSvgWithRegistry() before rasterizing.
+
+    // FB helper: also open file picker so you can immediately upload the saved photo
+    var helper = document.querySelector('[data-fb-helper="true"]');
+    if (helper && !helper.__wired) {
+      helper.__wired = true;
+      var input = helper.querySelector('input');
+      var btn = helper.querySelector('button');
+      function parseUsername(urlStr){ try { var u = new URL(urlStr); var p = u.pathname.split('/').filter(Boolean); return p[0] || ''; } catch(e){ return ''; } }
+      btn.addEventListener('click', function(){
+        var username = parseUsername((input.value||'').trim());
+        if (!username) return;
+        try { if (!app.profileName) app.profileName = username; } catch(e){}
+        var picUrl = 'https://graph.facebook.com/' + username + '/picture?type=large';
+        // 1) Open in new tab for user to Save (avoids CORS)
+        var a = document.createElement('a'); a.href = picUrl; a.target = '_blank'; a.rel='noopener noreferrer'; a.click();
+        // 2) Prompt file picker on the profile uploader so they can attach the saved file
+        setTimeout(function(){
+          // find file input within profile uploader block
+          var wrap = helper.closest('.profile__input-wrapper') || document;
+          var fileInput = wrap.querySelector('input[type="file"]');
+          if (!fileInput) fileInput = document.querySelector('.profile__input-wrapper input[type="file"]');
+          if (fileInput) fileInput.click();
+        }, 300);
+      });
+    }
+
+    // Re-wrap app.downloadPng/app.copyImage with new capture()
+    if (typeof window.app.downloadPng === 'function') {
+      window.app.downloadPng = function(target, name){
+        var root = document.getElementById(target) || document.querySelector('#mockup_builder');
+        if (!root) return;
+        return capture(root).then(function(canvas){
+          if (canvas.toBlob) {
+            canvas.toBlob(function(blob){
+              var a = document.createElement('a');
+              a.download = (name || 'mockup') + '.png';
+              a.href = URL.createObjectURL(blob);
+              a.click();
+              setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+            }, 'image/png');
+          } else {
+            var a = document.createElement('a');
+            a.download = (name || 'mockup') + '.png';
+            a.href = canvas.toDataURL('image/png');
+            a.click();
+          }
+        });
+      };
+    }
+
+    if (typeof window.app.copyImage === 'function') {
+      window.app.copyImage = function(target){
+        var root = document.getElementById(target) || document.querySelector('#mockup_builder');
+        if (!root) return;
+        return capture(root).then(function(canvas){
+          if (navigator.clipboard && window.ClipboardItem && canvas.toBlob) {
+            return new Promise(function(resolve, reject){
+              canvas.toBlob(function(blob){
+                navigator.clipboard.write([new ClipboardItem({[blob.type]: blob})])
+                  .then(resolve)
+                  .catch(function(){
+                    try {
+                      navigator.clipboard.writeText(canvas.toDataURL('image/png')).then(resolve, reject);
+                    } catch(e) { reject(e); }
+                  });
+              }, 'image/png');
+            });
+          } else if (navigator.clipboard && navigator.clipboard.writeText) {
+            return navigator.clipboard.writeText(canvas.toDataURL('image/png'));
+          }
+        }).then(() => { try { window.app.copied = true; } catch(e){} });
+      };
+    }
+  }
+
+  function init(){ try { patchOnce(); } catch(e){ console.warn('append-only v4 failed:', e); } }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+  window.addEventListener('load', function(){ setTimeout(init, 100); });
+})();
+</script>
+
+<!-- Append-only v5: inline emoji icons so capture works without CORS -->
+<script>
+(function(){
+  window.__ICON_REGISTRY = Object.assign({}, window.__ICON_REGISTRY || {}, {
+    'facebook-like': "data:image/svg+xml,%3Csvg fill='none' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M16.0001 7.9996c0 4.418-3.5815 7.9996-7.9995 7.9996S.001 12.4176.001 7.9996 3.5825 0 8.0006 0C12.4186 0 16 3.5815 16 7.9996Z' fill='url(%23paint0_linear_15251_63610)'/%3E%3Cpath d='M16.0001 7.9996c0 4.418-3.5815 7.9996-7.9995 7.9996S.001 12.4176.001 7.9996 3.5825 0 8.0006 0C12.4186 0 16 3.5815 16 7.9996Z' fill='url(%23paint1_radial_15251_63610)'/%3E%3Cpath d='M16.0001 7.9996c0 4.418-3.5815 7.9996-7.9995 7.9996S.001 12.4176.001 7.9996 3.5825 0 8.0006 0C12.4186 0 16 3.5815 16 7.9996Z' fill='url(%23paint2_radial_15251_63610)' fill-opacity='.5'/%3E%3Cpath d='M7.3014 3.8662a.6974.6974 0 0 1 .6974-.6977c.6742 0 1.2207.5465 1.2207 1.2206v1.7464a.101.101 0 0 0 .101.101h1.7953c.992 0 1.7232.9273 1.4917 1.892l-.4572 1.9047a2.301 2.301 0 0 1-2.2374 1.764H6.9185a.5752.5752 0 0 1-.5752-.5752V7.7384c0-.4168.097-.8278.2834-1.2005l.2856-.5712a3.6878 3.6878 0 0 0 .3893-1.6509l-.0002-.4496ZM4.367 7a.767.767 0 0 0-.7669.767v3.2598a.767.767 0 0 0 .767.767h.767a.3835.3835 0 0 0 .3835-.3835V7.3835A.3835.3835 0 0 0 5.134 7h-.767Z' fill='%23fff'/%3E%3Cdefs%3E%3CradialGradient id='paint1_radial_15251_63610' cx='0' cy='0' r='1' gradientUnits='userSpaceOnUse' gradientTransform='rotate(90 .0005 8) scale(7.99958)'%3E%3Cstop offset='.5618' stop-color='%230866FF' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%230866FF' stop-opacity='.1'/%3E%3C/radialGradient%3E%3CradialGradient id='paint2_radial_15251_63610' cx='0' cy='0' r='1' gradientUnits='userSpaceOnUse' gradientTransform='rotate(45 -4.5257 10.9237) scale(10.1818)'%3E%3Cstop offset='.3143' stop-color='%2302ADFC'/%3E%3Cstop offset='1' stop-color='%2302ADFC' stop-opacity='0'/%3E%3C/radialGradient%3E%3ClinearGradient id='paint0_linear_15251_63610' x1='2.3989' y1='2.3999' x2='13.5983' y2='13.5993' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%2302ADFC'/%3E%3Cstop offset='.5' stop-color='%230866FF'/%3E%3Cstop offset='1' stop-color='%232B7EFF'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E",
+    'facebook-heart': "data:image/svg+xml,%3Csvg fill='none' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cg clip-path='url(%23clip0_15251_63610)'%3E%3Cpath d='M15.9963 8c0 4.4179-3.5811 7.9993-7.9986 7.9993-4.4176 0-7.9987-3.5814-7.9987-7.9992 0-4.4179 3.5811-7.9992 7.9987-7.9992 4.4175 0 7.9986 3.5813 7.9986 7.9992Z' fill='url(%23paint0_linear_15251_63610)'/%3E%3Cpath d='M15.9973 7.9992c0 4.4178-3.5811 7.9992-7.9987 7.9992C3.5811 15.9984 0 12.417 0 7.9992S3.5811 0 7.9986 0c4.4176 0 7.9987 3.5814 7.9987 7.9992Z' fill='url(%23paint1_radial_15251_63610)'/%3E%3Cpath d='M7.9996 5.9081c-.3528-.8845-1.1936-1.507-2.1748-1.507-1.4323 0-2.4254 1.328-2.4254 2.6797 0 2.2718 2.3938 4.0094 4.0816 5.1589.3168.2157.7205.2157 1.0373 0 1.6878-1.1495 4.0815-2.8871 4.0815-5.159 0-1.3517-.993-2.6796-2.4254-2.6796-.9811 0-1.822.6225-2.1748 1.507Z' fill='%23fff'/%3E%3C/g%3E%3Cdefs%3E%3CradialGradient id='paint1_radial_15251_63610' cx='0' cy='0' r='1' gradientUnits='userSpaceOnUse' gradientTransform='matrix(0 7.9992 -7.99863 0 7.9986 7.9992)'%3E%3Cstop offset='.5637' stop-color='%23E11731' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23E11731' stop-opacity='.1'/%3E%3C/radialGradient%3E%3ClinearGradient id='paint0_linear_15251_63610' x1='2.3986' y1='2.4007' x2='13.5975' y2='13.5993' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23FF74AE'/%3E%3Cstop offset='.5001' stop-color='%23FA2E3E'/%3E%3Cstop offset='1' stop-color='%23FF5758'/%3E%3C/linearGradient%3E%3CclipPath id='clip0_15251_63610'%3E%3Cpath fill='%23fff' d='M-.001.0009h15.9992v15.9984H-.001z'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E",
+    'facebook-surprise': "data:image/svg+xml,%3Csvg fill='none' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cg clip-path='url(%23clip0_15251_63610)'%3E%3Cpath d='M15.9972 7.9996c0 4.418-3.5815 7.9996-7.9996 7.9996-4.418 0-7.9996-3.5816-7.9996-7.9996S3.5796 0 7.9976 0c4.4181 0 7.9996 3.5815 7.9996 7.9996Z' fill='url(%23paint0_linear_15251_63610)'/%3E%3Cpath d='M15.9973 7.9992c0 4.4178-3.5811 7.9992-7.9987 7.9992C3.5811 15.9984 0 12.417 0 7.9992S3.5811 0 7.9986 0c4.4176 0 7.9987 3.5814 7.9987 7.9992Z' fill='url(%23paint1_radial_15251_63610)'/%3E%3Cpath d='M15.9972 7.9996c0 4.418-3.5815 7.9996-7.9996 7.9996-4.418 0-7.9996-3.5816-7.9996-7.9996S3.5796 0 7.9976 0c4.4181 0 7.9996 3.5815 7.9996 7.9996Z' fill='url(%23paint2_radial_15251_63610)' fill-opacity='.8'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M5.6144 10.8866c.159-1.8461 1.127-2.887 2.382-2.887 1.2551 0 2.2231 1.0418 2.3822 2.887.1591 1.8461-.7342 3.1127-2.3821 3.1127-1.648 0-2.5412-1.2666-2.3821-3.1127Z' fill='%234B280E'/%3E%3Cellipse cx='11.1978' cy='5.6997' rx='1.3999' ry='1.6999' fill='%231C1C1D'/%3E%3Cellipse cx='4.7979' cy='5.6997' rx='1.3999' ry='1.6999' fill='%231C1C1D'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M12.3528 3.166a1.4744 1.4744 0 0 0-1.8591-.3279.4.4 0 1 1-.3976-.6941c.9527-.5457 2.1592-.333 2.8678.5056a.4.4 0 0 1-.6111.5163ZM5.4998 2.8381a1.4744 1.4744 0 0 0-1.859.3278.4.4 0 0 1-.6111-.5162c.7085-.8387 1.915-1.0514 2.8677-.5057a.4.4 0 0 1-.3976.6941Z' fill='%23E0761A'/%3E%3C/g%3E%3Cdefs%3E%3CradialGradient id='paint1_radial_15251_63610' cx='0' cy='0' r='1' gradientUnits='userSpaceOnUse' gradientTransform='matrix(0 7.9992 -7.99863 0 7.9986 7.9992)'%3E%3Cstop offset='.5637' stop-color='%23FF5758' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23FF5758' stop-opacity='.1'/%3E%3C/radialGradient%3E%3CradialGradient id='paint2_radial_15251_63610' cx='0' cy='0' r='1' gradientUnits='userSpaceOnUse' gradientTransform='rotate(45 -4.5262 10.9226) scale(10.1818)'%3E%3Cstop stop-color='%23FFF287'/%3E%3Cstop offset='1' stop-color='%23FFF287' stop-opacity='0'/%3E%3C/radialGradient%3E%3ClinearGradient id='paint0_linear_15251_63610' x1='2.3979' y1='2.3999' x2='13.5973' y2='13.5993' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23FFF287'/%3E%3Cstop offset='1' stop-color='%23F68628'/%3E%3C/linearGradient%3E%3CclipPath id='clip0_15251_63610'%3E%3Cpath fill='%23fff' d='M-.002 0h15.9992v15.9992H-.002z'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E",
+    'facebook-sad': "data:image/svg+xml,%3Csvg fill='none' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cg clip-path='url(%23clip0_15251_63610)'%3E%3Cpath d='M15.9943 8.0004c0 4.4181-3.5815 7.9996-7.9996 7.9996-4.418 0-7.9996-3.5815-7.9996-7.9996 0-4.418 3.5816-7.9995 7.9996-7.9995 4.4181 0 7.9996 3.5815 7.9996 7.9995Z' fill='url(%23paint0_linear_15251_63610)'/%3E%3Cpath d='M15.9973 7.9992c0 4.4178-3.5811 7.9992-7.9987 7.9992C3.5811 15.9984 0 12.417 0 7.9992S3.5811 0 7.9986 0c4.4176 0 7.9987 3.5814 7.9987 7.9992Z' fill='url(%23paint1_radial_15251_63610)'/%3E%3Cpath d='M15.9943 8.0004c0 4.4181-3.5815 7.9996-7.9996 7.9996-4.418 0-7.9996-3.5815-7.9996-7.9996 0-4.418 3.5816-7.9995 7.9996-7.9995 4.4181 0 7.9996 3.5815 7.9996 7.9995Z' fill='url(%23paint2_radial_15251_63610)' fill-opacity='.8'/%3E%3Cpath d='M12.3964 9.0861c0 1.1142-.3999 1.1142-1.1999 1.1142-.7999 0-1.2 0-1.2-1.1142 0-.8205.5373-1.4856 1.2-1.4856s1.1999.6651 1.1999 1.4856ZM5.9965 9.0861c0 1.1142-.4 1.1142-1.1999 1.1142-.8 0-1.2 0-1.2-1.1142 0-.8205.5373-1.4856 1.2-1.4856s1.2.6651 1.2 1.4856Z' fill='%231C1C1D'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M7.9946 11.2002c1.6447 0 2.3999 1.0936 2.3999 1.4122 0 .1095-.084.1877-.2248.1877-.3152 0-.752-.4-2.1751-.4s-1.8599.4-2.175.4c-.1409 0-.2249-.0782-.2249-.1877 0-.3186.7552-1.4122 2.3999-1.4122Z' fill='%234B280E'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M10.7861 6.3078a3.3942 3.3942 0 0 1 1.8777 1.0409.4.4 0 0 0 .5892-.5411 4.1944 4.1944 0 0 0-2.3202-1.2862.4.4 0 1 0-.1467.7864ZM5.206 6.3078a3.3946 3.3946 0 0 0-1.8777 1.0409.4.4 0 1 1-.5891-.5411 4.1946 4.1946 0 0 1 2.3202-1.2862.4.4 0 0 1 .1467.7864Z' fill='%23E0761A'/%3E%3Cg filter='url(%23filter0_i_15251_63610)'%3E%3Cpath d='M2.9952 11.2004c-.2647-.003-.435.1598-1.1536 1.3088-.3267.5231-.6468 1.0515-.6468 1.691 0 .994.8 1.7999 1.8 1.7999.9999 0 1.8008-.8 1.8008-1.7999 0-.6395-.32-1.1679-.6468-1.691-.7186-1.149-.8887-1.3118-1.1536-1.3088Z' fill='%2302ADFC' fill-opacity='.9'/%3E%3C/g%3E%3C/g%3E%3Cdefs%3E%3CradialGradient id='paint1_radial_15251_63610' cx='0' cy='0' r='1' gradientUnits='userSpaceOnUse' gradientTransform='matrix(0 7.9992 -7.99863 0 7.9986 7.9992)'%3E%3Cstop offset='.5637' stop-color='%23FF5758' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23FF5758' stop-opacity='.1'/%3E%3C/radialGradient%3E%3CradialGradient id='paint2_radial_15251_63610' cx='0' cy='0' r='1' gradientUnits='userSpaceOnUse' gradientTransform='rotate(45 -4.5287 10.9195) scale(10.1818)'%3E%3Cstop stop-color='%23FFF287'/%3E%3Cstop offset='1' stop-color='%23FFF287' stop-opacity='0'/%3E%3C/radialGradient%3E%3ClinearGradient id='paint0_linear_15251_63610' x1='2.395' y1='2.4007' x2='13.5944' y2='13.6001' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23FFF287'/%3E%3Cstop offset='1' stop-color='%23F68628'/%3E%3C/linearGradient%3E%3CclipPath id='clip0_15251_63610'%3E%3Cpath fill='%23fff' d='M-.003.0009h15.9993v15.9984H-.003z'/%3E%3C/clipPath%3E%3Cfilter id='filter0_i_15251_63610' x='1.1948' y='11.2003' width='3.6006' height='4.7998' filterUnits='userSpaceOnUse' color-interpolation-filters='sRGB'%3E%3CfeFlood flood-opacity='0' result='BackgroundImageFix'/%3E%3CfeBlend in='SourceGraphic' in2='BackgroundImageFix' result='shape'/%3E%3CfeColorMatrix in='SourceAlpha' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0' result='hardAlpha'/%3E%3CfeOffset/%3E%3CfeGaussianBlur stdDeviation='1.1999'/%3E%3CfeComposite in2='hardAlpha' operator='arithmetic' k2='-1' k3='1'/%3E%3CfeColorMatrix values='0 0 0 0 0.278431 0 0 0 0 0.196078 0 0 0 0 0.952941 0 0 0 0.1 0'/%3E%3CfeBlend in2='shape' result='effect1_innerShadow_15251_63610'/%3E%3C/filter%3E%3C/defs%3E%3C/svg%3E",
+    'facebook-care': "data:image/svg+xml,%3Csvg fill='none' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cg clip-path='url(%23clip0_15251_63610)'%3E%3Cpath d='M15.9982 7.9998c0 4.4181-3.5815 7.9996-7.9996 7.9996-4.418 0-7.9996-3.5815-7.9996-7.9996 0-4.418 3.5816-7.9996 7.9996-7.9996 4.4181 0 7.9996 3.5816 7.9996 7.9996Z' fill='url(%23paint0_linear_15251_63610)'/%3E%3Cpath d='M15.9973 7.9992c0 4.4178-3.5811 7.9992-7.9987 7.9992C3.5811 15.9984 0 12.417 0 7.9992S3.5811 0 7.9986 0c4.4176 0 7.9987 3.5814 7.9987 7.9992Z' fill='url(%23paint1_radial_15251_63610)'/%3E%3Cmask id='mask0_15251_63610' style='mask-type:alpha' maskUnits='userSpaceOnUse' x='6' y='13' width='8' height='3'%3E%3Cpath d='M13.6084 13.7029c-1.4438 1.4203-3.4244 2.2965-5.6097 2.2965a8.0393 8.0393 0 0 1-1.5715-.1543c.6898-.2867 1.6353-.7368 2.5437-1.3171 1.2793.5295 3.4828.2415 4.6285-.8326l.009.0075Z' fill='%23D9D9D9'/%3E%3C/mask%3E%3Cg mask='url(%23mask0_15251_63610)'%3E%3Cpath d='M15.9982 7.9998c0 4.4181-3.5815 7.9996-7.9996 7.9996-4.418 0-7.9996-3.5815-7.9996-7.9996 0-4.418 3.5816-7.9996 7.9996-7.9996 4.4181 0 7.9996 3.5816 7.9996 7.9996Z' fill='url(%23paint2_linear_15251_63610)'/%3E%3C/g%3E%3Cpath d='M15.9962 7.9996c0 4.418-3.5815 7.9996-7.9995 7.9996S-.003 12.4176-.003 7.9996 3.5786 0 7.9967 0c4.418 0 7.9995 3.5815 7.9995 7.9996Z' fill='url(%23paint3_radial_15251_63610)'/%3E%3Cpath d='M15.9962 7.9996c0 4.418-3.5815 7.9996-7.9995 7.9996S-.003 12.4176-.003 7.9996 3.5786 0 7.9967 0c4.418 0 7.9995 3.5815 7.9995 7.9996Z' fill='url(%23paint4_radial_15251_63610)'/%3E%3Cpath d='M15.9962 7.9996c0 4.418-3.5815 7.9996-7.9995 7.9996S-.003 12.4176-.003 7.9996 3.5786 0 7.9967 0c4.418 0 7.9995 3.5815 7.9995 7.9996Z' fill='url(%23paint5_radial_15251_63610)' style='mix-blend-mode:multiply'/%3E%3Cpath d='M15.9962 7.9996c0 4.418-3.5815 7.9996-7.9995 7.9996S-.003 12.4176-.003 7.9996 3.5786 0 7.9967 0c4.418 0 7.9995 3.5815 7.9995 7.9996Z' fill='url(%23paint6_radial_15251_63610)' style='mix-blend-mode:multiply'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M9.585 7.7886a.499.499 0 0 1 .026.0043 2.849 2.849 0 0 1 1.8175 1.202 2.8423 2.8423 0 0 1 .4349 2.1333c-.2461 1.2665-1.3291 2.3137-2.4304 3.0886-1.1259.7923-2.3926 1.3839-3.2016 1.7072a1.08 1.08 0 0 1-1.151-.2237c-.6289-.6028-1.5818-1.6259-2.329-2.7823-.7307-1.131-1.3425-2.5076-1.0963-3.7741a2.8425 2.8425 0 0 1 1.2024-1.8151 2.8492 2.8492 0 0 1 2.1354-.4336.5086.5086 0 0 1 .0268.006 2.9735 2.9735 0 0 1 1.4594.8686c.1647.1788.3813.4853.5716.8626.3155-.2781.6296-.482.8526-.5874a2.9734 2.9734 0 0 1 1.6817-.2564Z' fill='url(%23paint7_radial_15251_63610)'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M9.585 7.7886a.499.499 0 0 1 .026.0043 2.849 2.849 0 0 1 1.8175 1.202 2.8423 2.8423 0 0 1 .4349 2.1333c-.2461 1.2665-1.3291 2.3137-2.4304 3.0886-1.1259.7923-2.3926 1.3839-3.2016 1.7072a1.08 1.08 0 0 1-1.151-.2237c-.6289-.6028-1.5818-1.6259-2.329-2.7823-.7307-1.131-1.3425-2.5076-1.0963-3.7741a2.8425 2.8425 0 0 1 1.2024-1.8151 2.8492 2.8492 0 0 1 2.1354-.4336.5086.5086 0 0 1 .0268.006 2.9735 2.9735 0 0 1 1.4594.8686c.1647.1788.3813.4853.5716.8626.3155-.2781.6296-.482.8526-.5874a2.9734 2.9734 0 0 1 1.6817-.2564Z' fill='url(%23paint8_radial_15251_63610)'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M9.585 7.7886a.499.499 0 0 1 .026.0043 2.849 2.849 0 0 1 1.8175 1.202 2.8423 2.8423 0 0 1 .4349 2.1333c-.2461 1.2665-1.3291 2.3137-2.4304 3.0886-1.1259.7923-2.3926 1.3839-3.2016 1.7072a1.08 1.08 0 0 1-1.151-.2237c-.6289-.6028-1.5818-1.6259-2.329-2.7823-.7307-1.131-1.3425-2.5076-1.0963-3.7741a2.8425 2.8425 0 0 1 1.2024-1.8151 2.8492 2.8492 0 0 1 2.1354-.4336.5086.5086 0 0 1 .0268.006 2.9735 2.9735 0 0 1 1.4594.8686c.1647.1788.3813.4853.5716.8626.3155-.2781.6296-.482.8526-.5874a2.9734 2.9734 0 0 1 1.6817-.2564Z' fill='url(%23paint9_radial_15251_63610)'/%3E%3Cmask id='mask1_15251_63610' style='mask-type:alpha' maskUnits='userSpaceOnUse' x='-1' y='0' width='17' height='16'%3E%3Ccircle cx='7.9976' cy='7.9998' r='7.9996' fill='%23fff'/%3E%3C/mask%3E%3Cg mask='url(%23mask1_15251_63610)' fill-rule='evenodd' clip-rule='evenodd'%3E%3Cpath d='M1.3582 7.6194C.836 7.1064.318 7.2994.118 7.9596c-.2.6603-.0513 2.4955 1.0427 3.3962 2.752 2.2662 5.464.8613 5.5191-.5247.0498-1.2472-1.3555-1.113-1.8127-1.0879-.0311.0018-.0445-.0412-.0178-.0582.096-.0626.2535-.1719.4198-.3125.3594-.3044.1753-.8326-.3264-.6813-.0756.0224-1.2968.3904-2.0707.0967-.8778-.3331-.9828-.6465-1.5147-1.1685h.0009Z' fill='%23FFF287'/%3E%3Cpath d='M1.3582 7.6194C.836 7.1064.318 7.2994.118 7.9596c-.2.6603-.0513 2.4955 1.0427 3.3962 2.752 2.2662 5.464.8613 5.5191-.5247.0498-1.2472-1.3555-1.113-1.8127-1.0879-.0311.0018-.0445-.0412-.0178-.0582.096-.0626.2535-.1719.4198-.3125.3594-.3044.1753-.8326-.3264-.6813-.0756.0224-1.2968.3904-2.0707.0967-.8778-.3331-.9828-.6465-1.5147-1.1685h.0009Z' fill='url(%23paint10_linear_15251_63610)'/%3E%3Cpath d='M1.3582 7.6194C.836 7.1064.318 7.2994.118 7.9596c-.2.6603-.0513 2.4955 1.0427 3.3962 2.752 2.2662 5.464.8613 5.5191-.5247.0498-1.2472-1.3555-1.113-1.8127-1.0879-.0311.0018-.0445-.0412-.0178-.0582.096-.0626.2535-.1719.4198-.3125.3594-.3044.1753-.8326-.3264-.6813-.0756.0224-1.2968.3904-2.0707.0967-.8778-.3331-.9828-.6465-1.5147-1.1685h.0009Z' fill='url(%23paint11_radial_15251_63610)' fill-opacity='.6'/%3E%3Cpath d='M1.3582 7.6194C.836 7.1064.318 7.2994.118 7.9596c-.2.6603-.0513 2.4955 1.0427 3.3962 2.752 2.2662 5.464.8613 5.5191-.5247.0498-1.2472-1.3555-1.113-1.8127-1.0879-.0311.0018-.0445-.0412-.0178-.0582.096-.0626.2535-.1719.4198-.3125.3594-.3044.1753-.8326-.3264-.6813-.0756.0224-1.2968.3904-2.0707.0967-.8778-.3331-.9828-.6465-1.5147-1.1685h.0009Z' fill='url(%23paint12_radial_15251_63610)'/%3E%3Cpath d='M1.3582 7.6194C.836 7.1064.318 7.2994.118 7.9596c-.2.6603-.0513 2.4955 1.0427 3.3962 2.752 2.2662 5.464.8613 5.5191-.5247.0498-1.2472-1.3555-1.113-1.8127-1.0879-.0311.0018-.0445-.0412-.0178-.0582.096-.0626.2535-.1719.4198-.3125.3594-.3044.1753-.8326-.3264-.6813-.0756.0224-1.2968.3904-2.0707.0967-.8778-.3331-.9828-.6465-1.5147-1.1685h.0009Z' fill='url(%23paint13_radial_15251_63610)'/%3E%3Cpath d='M1.3582 7.6194C.836 7.1064.318 7.2994.118 7.9596c-.2.6603-.0513 2.4955 1.0427 3.3962 2.752 2.2662 5.464.8613 5.5191-.5247.0498-1.2472-1.3555-1.113-1.8127-1.0879-.0311.0018-.0445-.0412-.0178-.0582.096-.0626.2535-.1719.4198-.3125.3594-.3044.1753-.8326-.3264-.6813-.0756.0224-1.2968.3904-2.0707.0967-.8778-.3331-.9828-.6465-1.5147-1.1685h.0009Z' fill='url(%23paint14_radial_15251_63610)'/%3E%3Cpath d='M14.2827 7.7582c.3146-.7585.3146-1.1585.7145-1.3585.4-.2 1 .4 1 1.6 0 1.9998-.8 4.1957-2.3999 5.6956-1.5999 1.5-5.2626 1.4668-5.5906-.1845-.2727-1.3695 1.1697-1.5059 1.6332-1.571.0316-.0045.0378-.0542.0079-.0677a4.201 4.201 0 0 1-.474-.262c-.4125-.2647-.3176-.8871.211-.8203.599.0913 1.3395.2647 1.978.1997 1.8469-.1888 2.6052-2.4728 2.9199-3.2313Z' fill='%23FFF287'/%3E%3Cpath d='M14.2827 7.7582c.3146-.7585.3146-1.1585.7145-1.3585.4-.2 1 .4 1 1.6 0 1.9998-.8 4.1957-2.3999 5.6956-1.5999 1.5-5.2626 1.4668-5.5906-.1845-.2727-1.3695 1.1697-1.5059 1.6332-1.571.0316-.0045.0378-.0542.0079-.0677a4.201 4.201 0 0 1-.474-.262c-.4125-.2647-.3176-.8871.211-.8203.599.0913 1.3395.2647 1.978.1997 1.8469-.1888 2.6052-2.4728 2.9199-3.2313Z' fill='url(%23paint15_linear_15251_63610)'/%3E%3Cpath d='M14.2827 7.7582c.3146-.7585.3146-1.1585.7145-1.3585.4-.2 1 .4 1 1.6 0 1.9998-.8 4.1957-2.3999 5.6956-1.5999 1.5-5.2626 1.4668-5.5906-.1845-.2727-1.3695 1.1697-1.5059 1.6332-1.571.0316-.0045.0378-.0542.0079-.0677a4.201 4.201 0 0 1-.474-.262c-.4125-.2647-.3176-.8871.211-.8203.599.0913 1.3395.2647 1.978.1997 1.8469-.1888 2.6052-2.4728 2.9199-3.2313Z' fill='url(%23paint16_radial_15251_63610)' fill-opacity='.8'/%3E%3Cpath d='M14.2827 7.7582c.3146-.7585.3146-1.1585.7145-1.3585.4-.2 1 .4 1 1.6 0 1.9998-.8 4.1957-2.3999 5.6956-1.5999 1.5-5.2626 1.4668-5.5906-.1845-.2727-1.3695 1.1697-1.5059 1.6332-1.571.0316-.0045.0378-.0542.0079-.0677a4.201 4.201 0 0 1-.474-.262c-.4125-.2647-.3176-.8871.211-.8203.599.0913 1.3395.2647 1.978.1997 1.8469-.1888 2.6052-2.4728 2.9199-3.2313Z' fill='url(%23paint17_radial_15251_63610)'/%3E%3Cpath d='M14.2827 7.7582c.3146-.7585.3146-1.1585.7145-1.3585.4-.2 1 .4 1 1.6 0 1.9998-.8 4.1957-2.3999 5.6956-1.5999 1.5-5.2626 1.4668-5.5906-.1845-.2727-1.3695 1.1697-1.5059 1.6332-1.571.0316-.0045.0378-.0542.0079-.0677a4.201 4.201 0 0 1-.474-.262c-.4125-.2647-.3176-.8871.211-.8203.599.0913 1.3395.2647 1.978.1997 1.8469-.1888 2.6052-2.4728 2.9199-3.2313Z' fill='url(%23paint18_radial_15251_63610)' fill-opacity='.9' style='mix-blend-mode:screen'/%3E%3C/g%3E%3Cpath d='M7.9977 6.8c.71 0 1.1723-.1164 1.4952-.2331.3063-.1108.4-.4145.08-.4762C9.277 6.0336 8.7886 6 7.9978 6c-.7753 0-1.2813.0342-1.5903.0988-.3085.0646-.2235.3583.073.4654.3257.1177.8017.2357 1.5173.2357Z' fill='%234B280E'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M10.1526 2.0928a3.3945 3.3945 0 0 1 2.0299.699.4.4 0 0 0 .4863-.6352 4.1946 4.1946 0 0 0-2.5083-.8637.4.4 0 1 0-.0079.7999ZM5.843 2.0928a3.3946 3.3946 0 0 0-2.03.699.4.4 0 1 1-.4862-.6352 4.1945 4.1945 0 0 1 2.5083-.8637.4.4 0 1 1 .008.7999Z' fill='%23E0761A'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M9.998 4.3577c-.001.7238.483.936 1.1999 1.023.7099.1024 1.1878-.1978 1.1998-1.023.01-.6941-.3809-1.5413-1.1998-1.5575-.8189.0162-1.1999.8634-1.1999 1.5575ZM5.998 4.3577c.001.7238-.483.936-1.1998 1.023-.71.1024-1.1879-.1978-1.1999-1.023-.01-.6941.381-1.5413 1.1999-1.5575.8189.0162 1.1998.8634 1.1998 1.5575Z' fill='%231C1C1D'/%3E%3C/g%3E%3Cdefs%3E%3CradialGradient id='paint1_radial_15251_63610' cx='0' cy='0' r='1' gradientUnits='userSpaceOnUse' gradientTransform='matrix(0 7.9992 -7.99863 0 7.9986 7.9992)'%3E%3Cstop offset='.5637' stop-color='%23FF5758' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23FF5758' stop-opacity='.1'/%3E%3C/radialGradient%3E%3ClinearGradient id='paint0_linear_15251_63610' x1='2.5019' y1='2.5002' x2='16.002' y2='16.0002' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='.2619' stop-color='%23FFF287'/%3E%3Cstop offset='1' stop-color='%23F68628'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E",
+    'facebook-laugh': "data:image/svg+xml,%3Csvg fill='none' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cg clip-path='url(%23clip0_15251_63610)'%3E%3Cpath d='M15.9953 7.9996c0 4.418-3.5816 7.9996-7.9996 7.9996S-.004 12.4176-.004 7.9996 3.5776 0 7.9957 0c4.418 0 7.9996 3.5815 7.9996 7.9996Z' fill='url(%23paint0_linear_15251_63610)'/%3E%3Cpath d='M15.9973 7.9992c0 4.4178-3.5811 7.9992-7.9987 7.9992C3.5811 15.9984 0 12.417 0 7.9992S3.5811 0 7.9986 0c4.4176 0 7.9987 3.5814 7.9987 7.9992Z' fill='url(%23paint1_radial_15251_63610)'/%3E%3Cpath d='M15.9953 7.9996c0 4.418-3.5816 7.9996-7.9996 7.9996S-.004 12.4176-.004 7.9996 3.5776 0 7.9957 0c4.418 0 7.9996 3.5815 7.9996 7.9996Z' fill='url(%23paint2_radial_15251_63610)' fill-opacity='.8'/%3E%3Cpath d='M12.5278 8.1957c.4057.1104.6772.4854.623.9024-.3379 2.6001-2.5167 4.9012-5.1542 4.9012s-4.8163-2.3011-5.1542-4.9012c-.0542-.417.2173-.792.623-.9024.8708-.237 2.5215-.596 4.5312-.596 2.0098 0 3.6605.359 4.5312.596Z' fill='%234B280E'/%3E%3Cpath d='M11.5809 12.3764c-.9328.9843-2.1948 1.6228-3.5841 1.6228-1.3892 0-2.6512-.6383-3.5839-1.6225a1.5425 1.5425 0 0 0-.016-.0174c.4475-1.0137 2.2-1.3599 3.5999-1.3599 1.4 0 3.1514.3468 3.5998 1.3599l-.0157.0171Z' fill='url(%23paint3_linear_15251_63610)'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M13.3049 5.8793c.1614-1.1485-.6387-2.2103-1.7872-2.3717l-.0979-.0138c-1.1484-.1614-2.2103.6388-2.3717 1.7872l-.0163.1164a.5.5 0 0 0 .9902.1392l.0163-.1164c.0846-.6016.6408-1.0207 1.2424-.9362l.0978.0138c.6016.0845 1.0207.6407.9362 1.2423l-.0164.1164a.5.5 0 0 0 .9903.1392l.0163-.1164ZM2.6902 5.8793c-.1614-1.1485.6387-2.2103 1.7872-2.3717l.0979-.0138c1.1484-.1614 2.2103.6388 2.3717 1.7872l.0164.1164a.5.5 0 1 1-.9903.1392l-.0163-.1164c-.0846-.6016-.6408-1.0207-1.2423-.9362l-.098.0138c-.6015.0845-1.0206.6407-.936 1.2423l.0163.1164a.5.5 0 0 1-.9902.1392l-.0164-.1164Z' fill='%231C1C1D'/%3E%3C/g%3E%3Cdefs%3E%3CradialGradient id='paint1_radial_15251_63610' cx='0' cy='0' r='1' gradientUnits='userSpaceOnUse' gradientTransform='matrix(0 7.9992 -7.99863 0 7.9986 7.9992)'%3E%3Cstop offset='.5637' stop-color='%23FF5758' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23FF5758' stop-opacity='.1'/%3E%3C/radialGradient%3E%3CradialGradient id='paint2_radial_15251_63610' cx='0' cy='0' r='1' gradientUnits='userSpaceOnUse' gradientTransform='rotate(45 -4.5272 10.9202) scale(10.1818)'%3E%3Cstop stop-color='%23FFF287'/%3E%3Cstop offset='1' stop-color='%23FFF287' stop-opacity='0'/%3E%3C/radialGradient%3E%3ClinearGradient id='paint0_linear_15251_63610' x1='2.396' y1='2.3999' x2='13.5954' y2='13.5993' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23FFF287'/%3E%3Cstop offset='1' stop-color='%23F68628'/%3E%3C/linearGradient%3E%3ClinearGradient id='paint3_linear_15251_63610' x1='5.1979' y1='10.7996' x2='5.245' y2='14.2452' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23FF60A4'/%3E%3Cstop offset='.2417' stop-color='%23FA2E3E'/%3E%3Cstop offset='1' stop-color='%23BC0A26'/%3E%3C/linearGradient%3E%3CclipPath id='clip0_15251_63610'%3E%3Cpath fill='%23fff' d='M-.002 0h16v15.9992h-16z'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E",
+    'facebook-anger': "data:image/svg+xml,%3Csvg fill='none' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cg clip-path='url(%23clip0_15251_63610)'%3E%3Cpath d='M15.9972 7.9996c0 4.418-3.5815 7.9996-7.9996 7.9996-4.418 0-7.9996-3.5816-7.9996-7.9996S3.5796 0 7.9976 0c4.4181 0 7.9996 3.5815 7.9996 7.9996Z' fill='url(%23paint0_linear_15251_63610)'/%3E%3Cpath d='M15.9973 7.9992c0 4.4178-3.5811 7.9992-7.9987 7.9992C3.5811 15.9984 0 12.417 0 7.9992S3.5811 0 7.9986 0c4.4176 0 7.9987 3.5814 7.9987 7.9992Z' fill='url(%23paint1_radial_15251_63610)'/%3E%3Cpath d='M15.9972 7.9996c0 4.418-3.5815 7.9996-7.9996 7.9996-4.418 0-7.9996-3.5816-7.9996-7.9996S3.5796 0 7.9976 0c4.4181 0 7.9996 3.5815 7.9996 7.9996Z' fill='url(%23paint2_radial_15251_63610)' fill-opacity='.8'/%3E%3Cpath d='M12.3955 9.0853c0 1.1142-.4 1.1142-1.2 1.1142-.7999 0-1.1999 0-1.1999-1.1143 0-.8205.5372-1.4856 1.1999-1.4856s1.2.6651 1.2 1.4857ZM5.9956 9.0853c0 1.1142-.4 1.1142-1.2 1.1142-.8 0-1.1999 0-1.1999-1.1143 0-.8205.5372-1.4856 1.2-1.4856.6626 0 1.1999.6651 1.1999 1.4857Z' fill='%231C1C1D'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M7.9936 11.5994c1.3257 0 2.3999.292 2.3999.8023 0 .4234-1.0742.3973-2.3999.3973-1.3256 0-2.3998.0261-2.3998-.3973 0-.5103 1.0742-.8023 2.3998-.8023Z' fill='%234B280E'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M13.3283 7.0331a.4.4 0 0 0-.5444-.1535c-.4415.2472-1.0866.4228-1.7434.5373-.6488.1132-1.2697.1604-1.6367.1691a.4.4 0 1 0 .0191.7997c.4037-.0096 1.0643-.0602 1.755-.1807.6828-.119 1.4354-.313 1.9969-.6275a.4.4 0 0 0 .1535-.5444ZM2.491 7.0331a.4.4 0 0 1 .5444-.1535c.4416.2472 1.0866.4228 1.7434.5373.6488.1132 1.2697.1604 1.6367.1691a.4.4 0 1 1-.019.7997c-.4038-.0096-1.0643-.0602-1.7551-.1807-.6827-.119-1.4353-.313-1.9968-.6275a.4.4 0 0 1-.1536-.5444Z' fill='%23BC0A26'/%3E%3C/g%3E%3Cdefs%3E%3CradialGradient id='paint1_radial_15251_63610' cx='0' cy='0' r='1' gradientUnits='userSpaceOnUse' gradientTransform='matrix(0 7.9992 -7.99863 0 7.9986 7.9992)'%3E%3Cstop offset='.8134' stop-color='%23FA2E3E' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23FA2E3E' stop-opacity='.1'/%3E%3C/radialGradient%3E%3CradialGradient id='paint2_radial_15251_63610' cx='0' cy='0' r='1' gradientUnits='userSpaceOnUse' gradientTransform='rotate(45 -4.5272 10.9202) scale(10.1818)'%3E%3Cstop stop-color='%23FFB169'/%3E%3Cstop offset='1' stop-color='%23FFB169' stop-opacity='0'/%3E%3C/radialGradient%3E%3ClinearGradient id='paint0_linear_15251_63610' x1='2.396' y1='2.3999' x2='13.5954' y2='13.5993' gradientUnits='userSpaceOnUse'%3E%3Cstop stop-color='%23FFB169'/%3E%3Cstop offset='1' stop-color='%23FF5758'/%3E%3C/linearGradient%3E%3CclipPath id='clip0_15251_63610'%3E%3Cpath fill='%23fff' d='M-.004 0h15.9993v15.9992H-.004z'/%3E%3C/clipPath%3E%3C/defs%3E%3C/svg%3E"
+  });
+})();
+</script>
+
+</body></html>
