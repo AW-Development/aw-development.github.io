@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMS Screenshot Generator</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  :root {
+    --app-bg: #f5f5f7;
+    --panel-bg: #ffffff;
+    --text: #1d1d1f;
+    --text-muted: #86868b;
+    --border: #d2d2d7;
+    --accent: #007AFF;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--app-bg);
+    color: var(--text);
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* Layout */
+  .sidebar {
+    width: 380px;
+    min-width: 380px;
+    background: var(--panel-bg);
+    border-right: 1px solid var(--border);
+    padding: 24px;
+    overflow-y: auto;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+  }
+  .preview-area {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px;
+  }
+
+  /* Sidebar controls */
+  .sidebar h1 { font-size: 20px; margin-bottom: 20px; }
+  .sidebar h2 { font-size: 14px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin: 20px 0 8px; }
+  .sidebar h2:first-of-type { margin-top: 0; }
+
+  .field { margin-bottom: 12px; }
+  .field label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+  .field input, .field select, .field textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    background: var(--app-bg);
+  }
+  .field textarea { resize: vertical; min-height: 80px; }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0,122,255,0.15);
+  }
+
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+  }
+  .toggle-row label { font-size: 14px; }
+  .toggle {
+    width: 44px; height: 24px;
+    background: #ccc;
+    border-radius: 12px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .toggle.on { background: var(--accent); }
+  .toggle::after {
+    content: '';
+    width: 20px; height: 20px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px; left: 2px;
+    transition: transform 0.2s;
+  }
+  .toggle.on::after { transform: translateX(20px); }
+
+  .style-toggle {
+    display: flex;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .style-toggle button {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    background: var(--app-bg);
+    font-size: 14px;
+    font-family: inherit;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  .style-toggle button.active {
+    background: var(--accent);
+    color: white;
+  }
+
+  /* Message list */
+  .msg-list { margin: 8px 0; }
+  .msg-item {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    margin-bottom: 8px;
+    padding: 8px;
+    background: var(--app-bg);
+    border-radius: 8px;
+  }
+  .msg-item textarea {
+    flex: 1;
+    padding: 6px 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: inherit;
+    min-height: 40px;
+    resize: vertical;
+    background: white;
+  }
+  .msg-item select {
+    width: 90px;
+    padding: 6px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 12px;
+    background: white;
+  }
+  .msg-item .msg-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .msg-item button {
+    padding: 4px 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  .msg-item .btn-img {
+    background: #e8e8ed;
+    color: var(--text);
+  }
+  .msg-item .btn-del {
+    background: #ff3b30;
+    color: white;
+  }
+  .msg-item .img-preview {
+    width: 50px;
+    height: 50px;
+    border-radius: 6px;
+    object-fit: cover;
+    margin-top: 4px;
+  }
+
+  .btn-add {
+    width: 100%;
+    padding: 10px;
+    border: 2px dashed var(--border);
+    border-radius: 8px;
+    background: transparent;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .btn-add:hover { background: rgba(0,122,255,0.05); }
+
+  .btn-download {
+    width: 100%;
+    padding: 12px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    font-family: inherit;
+  }
+  .btn-download:hover { background: #0066d6; }
+
+  /* Phone preview */
+  .phone-frame {
+    width: 390px;
+    min-height: 844px;
+    border-radius: 44px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.08);
+    position: relative;
+  }
+
+  /* ── iOS Theme ── */
+  .phone-frame.ios.light { background: #ffffff; }
+  .phone-frame.ios.dark { background: #000000; }
+  .phone-frame.android.light { background: #ffffff; }
+  .phone-frame.android.dark { background: #1f1f1f; }
+
+  /* iOS Status bar */
+  .ios .status-bar {
+    height: 54px;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 28px 8px;
+    position: relative;
+  }
+  .ios.light .status-bar { color: #000; }
+  .ios.dark .status-bar { color: #fff; }
+  .status-bar .time { font-size: 15px; font-weight: 600; }
+  .status-bar .icons { margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 13px; }
+  .ios .dynamic-island {
+    width: 126px; height: 36px;
+    background: #000;
+    border-radius: 18px;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* Android Status bar */
+  .android .status-bar {
+    height: 24px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    font-size: 12px;
+  }
+  .android.light .status-bar { color: #000; }
+  .android.dark .status-bar { color: #e3e3e3; }
+
+  /* Header */
+  .msg-header {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    border-bottom: 1px solid;
+  }
+  .ios .msg-header {
+    height: 44px;
+  }
+  .ios.light .msg-header { background: #f6f6f6; border-color: #c6c6c8; }
+  .ios.dark .msg-header { background: #1c1c1e; border-color: #38383a; }
+  .android .msg-header { height: 56px; }
+  .android.light .msg-header { background: #fff; border-color: #e0e0e0; }
+  .android.dark .msg-header { background: #1f1f1f; border-color: #3c4043; }
+
+  .msg-header .back { font-size: 22px; margin-right: 8px; cursor: default; }
+  .ios .msg-header .back { color: #007AFF; }
+  .android .msg-header .back { color: inherit; }
+  .msg-header .avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: #5f6368;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    margin-right: 10px;
+  }
+  .ios .msg-header .avatar { display: none; }
+  .msg-header .contact-name { font-weight: 600; font-size: 17px; }
+  .ios .msg-header .contact-name { margin: 0 auto; }
+
+  /* Messages area */
+  .messages-body {
+    flex: 1;
+    padding: 10px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-height: 500px;
+  }
+
+  .bubble-wrap {
+    display: flex;
+    max-width: 75%;
+  }
+  .bubble-wrap.sent { align-self: flex-end; }
+  .bubble-wrap.received { align-self: flex-start; }
+
+  .bubble {
+    padding: 8px 12px;
+    font-size: 17px;
+    line-height: 1.35;
+    word-wrap: break-word;
+    position: relative;
+  }
+  .bubble img {
+    max-width: 240px;
+    border-radius: 14px;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  /* iOS bubbles */
+  .ios .bubble.sent {
+    background: #007AFF;
+    color: white;
+    border-radius: 18px 18px 4px 18px;
+  }
+  .ios .bubble.received {
+    background: #e9e9eb;
+    color: #000;
+    border-radius: 18px 18px 18px 4px;
+  }
+  .ios.dark .bubble.sent { background: #0b84fe; }
+  .ios.dark .bubble.received { background: #26252a; color: #fff; }
+
+  /* Android bubbles */
+  .android .bubble.sent {
+    background: #d3e3fd;
+    color: #041e49;
+    border-radius: 20px 20px 4px 20px;
+  }
+  .android .bubble.received {
+    background: #e8eaed;
+    color: #1f1f1f;
+    border-radius: 20px 20px 20px 4px;
+  }
+  .android.dark .bubble.sent { background: #004a77; color: #c2e7ff; }
+  .android.dark .bubble.received { background: #303134; color: #e3e3e3; }
+
+  /* Input bar */
+  .input-bar {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    gap: 8px;
+    border-top: 1px solid;
+  }
+  .ios.light .input-bar { background: #f6f6f6; border-color: #c6c6c8; }
+  .ios.dark .input-bar { background: #1c1c1e; border-color: #38383a; }
+  .android.light .input-bar { background: #fff; border-color: #e0e0e0; }
+  .android.dark .input-bar { background: #1f1f1f; border-color: #3c4043; }
+
+  .input-bar .fake-input {
+    flex: 1;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 16px;
+  }
+  .ios .fake-input { border: 1px solid #c7c7cc; background: transparent; color: #8e8e93; }
+  .ios.dark .fake-input { border-color: #38383a; color: #8e8e93; }
+  .android .fake-input { border: 1px solid #dadce0; background: #f1f3f4; color: #5f6368; }
+  .android.dark .fake-input { border-color: #3c4043; background: #303134; color: #9aa0a6; }
+
+  .input-bar .icon-btn {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: default;
+  }
+  .ios .icon-btn { background: #e5e5ea; color: #8e8e93; }
+  .ios.dark .icon-btn { background: #38383a; color: #8e8e93; }
+  .android .icon-btn { background: transparent; color: #5f6368; }
+
+  /* Android send button */
+  .android .send-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: #1a73e8;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .android.dark .send-btn { background: #8ab4f8; color: #1f1f1f; }
+
+  /* Home indicator / nav bar */
+  .ios .home-indicator {
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ios .home-indicator .bar {
+    width: 134px;
+    height: 5px;
+    border-radius: 3px;
+  }
+  .ios.light .home-indicator .bar { background: #000; }
+  .ios.dark .home-indicator .bar { background: #fff; }
+
+  .android .nav-bar {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 40px;
+  }
+  .android.light .nav-bar { color: #1f1f1f; }
+  .android.dark .nav-bar { color: #e3e3e3; }
+  .nav-bar .nav-icon { font-size: 20px; opacity: 0.7; }
+
+  /* Battery indicator */
+  .battery {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+  }
+  .battery-body {
+    width: 22px; height: 10px;
+    border: 1px solid currentColor;
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+  }
+  .battery-fill {
+    height: 100%;
+    background: currentColor;
+  }
+  .battery-cap {
+    width: 2px; height: 5px;
+    background: currentColor;
+    border-radius: 0 1px 1px 0;
+  }
+
+  /* Signal bars */
+  .signal-bars {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 1px;
+    height: 10px;
+  }
+  .signal-bars .bar {
+    width: 3px;
+    background: currentColor;
+    border-radius: 1px;
+  }
+
+  @media (max-width: 900px) {
+    body { flex-direction: column; }
+    .sidebar {
+      width: 100%;
+      min-width: unset;
+      height: auto;
+      position: static;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+    }
+    .preview-area { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <h1>SMS Screenshot Generator</h1>
+
+  <h2>Style</h2>
+  <div class="style-toggle">
+    <button class="active" onclick="setStyle('ios', this)">iOS (iMessage)</button>
+    <button onclick="setStyle('android', this)">Android</button>
+  </div>
+
+  <div class="toggle-row">
+    <label>Dark Mode</label>
+    <div class="toggle" id="darkToggle" onclick="toggleDark()"></div>
+  </div>
+
+  <h2>Contact</h2>
+  <div class="field">
+    <label>Contact Name</label>
+    <input type="text" id="contactName" value="John" oninput="render()">
+  </div>
+  <div class="field">
+    <label>Phone Number</label>
+    <input type="text" id="phoneNumber" value="(555) 123-4567" oninput="render()">
+  </div>
+
+  <h2>Status Bar</h2>
+  <div class="field">
+    <label>Time</label>
+    <input type="text" id="timeText" value="9:41" oninput="render()">
+  </div>
+  <div class="field">
+    <label>Battery Level (%)</label>
+    <input type="range" id="batteryLevel" min="0" max="100" value="80" oninput="render()">
+  </div>
+  <div class="field">
+    <label>Carrier</label>
+    <input type="text" id="carrier" placeholder="Optional" oninput="render()">
+  </div>
+
+  <h2>Messages</h2>
+  <div class="msg-list" id="msgList"></div>
+  <button class="btn-add" onclick="addMessage()">+ Add Message</button>
+
+  <button class="btn-download" onclick="downloadScreenshot()">Download Screenshot</button>
+</div>
+
+<!-- PREVIEW -->
+<div class="preview-area">
+  <div class="phone-frame ios light" id="phoneFrame">
+    <!-- Rendered by JS -->
+  </div>
+</div>
+
+<script>
+  // ── State ──
+  let state = {
+    style: 'ios',
+    darkMode: false,
+    contactName: 'John',
+    phoneNumber: '(555) 123-4567',
+    timeText: '9:41',
+    batteryLevel: 80,
+    carrier: '',
+    messages: [
+      { text: 'Hey! Check out this exclusive deal we have for you this weekend!', type: 'sent', image: null },
+      { text: 'Oh wow, that looks amazing! When does it start?', type: 'received', image: null },
+      { text: 'This Friday at 9am. Don\'t miss it!', type: 'sent', image: null },
+    ]
+  };
+
+  // ── Style toggle ──
+  function setStyle(s, btn) {
+    state.style = s;
+    document.querySelectorAll('.style-toggle button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    render();
+  }
+
+  function toggleDark() {
+    state.darkMode = !state.darkMode;
+    document.getElementById('darkToggle').classList.toggle('on', state.darkMode);
+    render();
+  }
+
+  // ── Message management ──
+  function addMessage(type = 'sent') {
+    state.messages.push({ text: '', type, image: null });
+    renderMsgList();
+    render();
+  }
+
+  function removeMessage(i) {
+    state.messages.splice(i, 1);
+    renderMsgList();
+    render();
+  }
+
+  function updateMsg(i, field, value) {
+    state.messages[i][field] = value;
+    render();
+  }
+
+  function attachImage(i) {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        state.messages[i].image = ev.target.result;
+        renderMsgList();
+        render();
+      };
+      reader.readAsDataURL(file);
+    };
+    input.click();
+  }
+
+  function removeImage(i) {
+    state.messages[i].image = null;
+    renderMsgList();
+    render();
+  }
+
+  function renderMsgList() {
+    const list = document.getElementById('msgList');
+    list.innerHTML = state.messages.map((m, i) => `
+      <div class="msg-item">
+        <div style="flex:1">
+          <textarea oninput="updateMsg(${i},'text',this.value)" placeholder="Message text...">${m.text}</textarea>
+          ${m.image ? `<img class="img-preview" src="${m.image}" onclick="removeImage(${i})" title="Click to remove">` : ''}
+        </div>
+        <div class="msg-controls">
+          <select onchange="updateMsg(${i},'type',this.value)">
+            <option value="sent" ${m.type==='sent'?'selected':''}>Sent</option>
+            <option value="received" ${m.type==='received'?'selected':''}>Received</option>
+          </select>
+          <button class="btn-img" onclick="attachImage(${i})">Img</button>
+          <button class="btn-del" onclick="removeMessage(${i})">Del</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ── Render phone preview ──
+  function render() {
+    state.contactName = document.getElementById('contactName').value || 'Contact';
+    state.phoneNumber = document.getElementById('phoneNumber').value;
+    state.timeText = document.getElementById('timeText').value || '9:41';
+    state.batteryLevel = parseInt(document.getElementById('batteryLevel').value);
+    state.carrier = document.getElementById('carrier').value;
+
+    const frame = document.getElementById('phoneFrame');
+    frame.className = `phone-frame ${state.style} ${state.darkMode ? 'dark' : 'light'}`;
+
+    const isIOS = state.style === 'ios';
+    const batPct = Math.max(0, Math.min(100, state.batteryLevel));
+    const batColor = batPct > 20 ? 'currentColor' : '#ff3b30';
+    const initial = (state.contactName[0] || '?').toUpperCase();
+
+    let html = '';
+
+    // Status bar
+    html += `<div class="status-bar">
+      <span class="time">${esc(state.timeText)}</span>
+      ${isIOS ? `<div class="dynamic-island"></div>` : ''}
+      ${state.carrier ? `<span style="margin-left:8px;font-size:13px">${esc(state.carrier)}</span>` : ''}
+      <span class="icons">
+        <span class="signal-bars">
+          <span class="bar" style="height:3px"></span>
+          <span class="bar" style="height:5px"></span>
+          <span class="bar" style="height:7px"></span>
+          <span class="bar" style="height:10px"></span>
+        </span>
+        <span style="font-size:11px">WiFi</span>
+        <span class="battery">
+          <span class="battery-body"><span class="battery-fill" style="width:${batPct}%;background:${batColor}"></span></span>
+          <span class="battery-cap"></span>
+        </span>
+      </span>
+    </div>`;
+
+    // Header
+    html += `<div class="msg-header">
+      <span class="back">${isIOS ? '&#8249;' : '&#8592;'}</span>
+      ${!isIOS ? `<div class="avatar">${initial}</div>` : ''}
+      <span class="contact-name">${esc(state.contactName)}</span>
+    </div>`;
+
+    // Messages
+    html += `<div class="messages-body">`;
+    for (const m of state.messages) {
+      if (!m.text && !m.image) continue;
+      html += `<div class="bubble-wrap ${m.type}">
+        <div class="bubble ${m.type}">
+          ${m.image ? `<img src="${m.image}">` : ''}
+          ${m.text ? esc(m.text) : ''}
+        </div>
+      </div>`;
+    }
+    html += `</div>`;
+
+    // Input bar
+    if (isIOS) {
+      html += `<div class="input-bar">
+        <div class="icon-btn">+</div>
+        <div class="fake-input">iMessage</div>
+        <div class="icon-btn">&#9786;</div>
+      </div>
+      <div class="home-indicator"><div class="bar"></div></div>`;
+    } else {
+      html += `<div class="input-bar">
+        <div class="icon-btn">&#9786;</div>
+        <div class="fake-input">Text message</div>
+        <div class="icon-btn">&#128247;</div>
+        <div class="send-btn">&#10148;</div>
+      </div>
+      <div class="nav-bar">
+        <span class="nav-icon">&#9664;</span>
+        <span class="nav-icon">&#9679;</span>
+        <span class="nav-icon">&#9632;</span>
+      </div>`;
+    }
+
+    frame.innerHTML = html;
+  }
+
+  function esc(s) {
+    const d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  // ── Download ──
+  async function downloadScreenshot() {
+    const frame = document.getElementById('phoneFrame');
+    const canvas = await html2canvas(frame, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: null,
+      borderRadius: '44px',
+    });
+    const link = document.createElement('a');
+    link.download = `sms_screenshot_${state.style}_${Date.now()}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  }
+
+  // ── Init ──
+  renderMsgList();
+  render();
+</script>
+</body>
+</html>
