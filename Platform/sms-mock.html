@@ -671,7 +671,7 @@
       html += `<div class="bubble-wrap ${m.type}">
         <div class="bubble ${m.type}">
           ${m.image ? `<img src="${m.image}">` : ''}
-          ${m.text ? esc(m.text) : ''}
+          ${m.text ? esc(m.text).replace(/\n/g, '<br>') : ''}
         </div>
       </div>`;
     }
