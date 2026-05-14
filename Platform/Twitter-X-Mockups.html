@@ -504,6 +504,120 @@
     margin-top: 0.4rem;
   }
 
+  /* ----- Character counter ----- */
+  .body-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: 0.4rem;
+  }
+
+  .body-meta .helper-text { margin-top: 0; }
+
+  .char-counter {
+    font-size: 0.82rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+    font-weight: 500;
+    white-space: nowrap;
+    transition: color 0.15s;
+  }
+
+  .char-counter.warning { color: #b45309; } /* amber-700 */
+  .char-counter.over    { color: var(--danger); font-weight: 600; }
+
+  /* ----- Modal ----- */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 20, 26, 0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease;
+  }
+
+  .modal-overlay.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .modal {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 1.75rem 1.75rem 1.5rem;
+    max-width: 440px;
+    width: 100%;
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    transform: translateY(8px) scale(0.98);
+    transition: transform 0.2s ease;
+  }
+
+  .modal-overlay.visible .modal {
+    transform: translateY(0) scale(1);
+  }
+
+  .modal-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(185, 28, 28, 0.1);
+    color: var(--danger);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .modal-icon svg { width: 22px; height: 22px; }
+
+  .modal h3 {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.35rem;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    margin-bottom: 0.6rem;
+  }
+
+  .modal p {
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+  }
+
+  .modal p strong { color: var(--text); }
+
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+
+  .modal-btn {
+    padding: 0.65rem 1.2rem;
+    border-radius: 8px;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.88rem;
+    cursor: pointer;
+    font-family: inherit;
+    transition: transform 0.1s;
+  }
+
+  .modal-btn:hover { transform: translateY(-1px); }
+
   footer {
     margin-top: 3rem;
     padding-top: 1.5rem;
@@ -560,7 +674,10 @@
 This year alone, we've helped our comrade's retrieve more than 2.5 million dubloons in benefits and assistance — including help with sourcing delicious squirrel meat, lacing their sprinkler lines with Naplam, and the Social Credit System!
 
 If you need assistance with something in the agency, my office is here to help.</textarea>
-        <div class="helper-text">Line breaks and emoji are preserved.</div>
+        <div class="body-meta">
+          <div class="helper-text">Line breaks and emoji are preserved.</div>
+          <div class="char-counter" id="charCounter">0 / 280</div>
+        </div>
       </div>
 
       <div class="field">
@@ -626,6 +743,21 @@ If you need assistance with something in the agency, my office is here to help.<
   <footer>
     Built for <span class="accent">Arena</span> · self-contained · host anywhere
   </footer>
+</div>
+
+<!-- ============== CHARACTER LIMIT MODAL ============== -->
+<div class="modal-overlay" id="charLimitModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+  <div class="modal">
+    <div class="modal-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </div>
+    <h3 id="modalTitle">Over the character limit</h3>
+    <p>Your tweet body is over <strong>280 characters</strong>. The mockup will still render at any length — but if someone tries to actually post this to Twitter/X, it will be <strong>rejected</strong> unless the account has X Premium.</p>
+    <p style="font-size: 0.82rem; margin-bottom: 1.25rem;">Note: Twitter's real counter weighs URLs at 23 chars and treats some characters as 2. This counter is a straight character count, so the real cutoff may be slightly different.</p>
+    <div class="modal-actions">
+      <button class="modal-btn" id="modalClose">Got it</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -738,6 +870,60 @@ If you need assistance with something in the agency, my office is here to help.<
   bindText('bodyText', 'body');
   bindText('linkUrl', 'linkUrl');
   bindText('linkTitle', 'linkTitle');
+
+  // ----- Character counter + over-limit modal -----
+  const TWEET_LIMIT = 280;
+  const WARN_AT = 260; // amber warning approaching the limit
+  const charCounter = document.getElementById('charCounter');
+  const charLimitModal = document.getElementById('charLimitModal');
+  const modalClose = document.getElementById('modalClose');
+
+  // Track whether the user is currently "over" so we only fire the modal
+  // on the crossing event (≤280 → >280), not every keystroke past the limit.
+  let wasOverLimit = false;
+
+  function updateCharCounter() {
+    const len = state.body.length;
+    charCounter.textContent = `${len.toLocaleString()} / ${TWEET_LIMIT}`;
+
+    charCounter.classList.remove('warning', 'over');
+    if (len > TWEET_LIMIT) charCounter.classList.add('over');
+    else if (len >= WARN_AT) charCounter.classList.add('warning');
+
+    const isOver = len > TWEET_LIMIT;
+    if (isOver && !wasOverLimit) {
+      openModal();
+    }
+    wasOverLimit = isOver;
+  }
+
+  function openModal() {
+    charLimitModal.classList.add('visible');
+    charLimitModal.setAttribute('aria-hidden', 'false');
+    // Defer focus so the keystroke that triggered the modal isn't swallowed
+    setTimeout(() => modalClose.focus(), 50);
+  }
+
+  function closeModal() {
+    charLimitModal.classList.remove('visible');
+    charLimitModal.setAttribute('aria-hidden', 'true');
+    document.getElementById('bodyText').focus();
+  }
+
+  modalClose.addEventListener('click', closeModal);
+  charLimitModal.addEventListener('click', e => {
+    if (e.target === charLimitModal) closeModal();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && charLimitModal.classList.contains('visible')) {
+      closeModal();
+    }
+  });
+
+  // Update counter whenever the body changes
+  document.getElementById('bodyText').addEventListener('input', updateCharCounter);
+  // And initialize from the pre-populated default
+  updateCharCounter();
 
   // Handle: strip leading @ if user pastes it
   document.getElementById('handle').addEventListener('input', e => {
